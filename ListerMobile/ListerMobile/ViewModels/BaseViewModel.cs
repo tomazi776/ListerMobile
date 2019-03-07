@@ -1,18 +1,17 @@
-﻿using System;
+﻿using ListerMobile.Models;
+using ListerMobile.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Xamarin.Forms;
-
-using ListerMobile.Models;
-using ListerMobile.Services;
 
 namespace ListerMobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+        public IDataStore<ShoppingList> DataStore => DependencyService.Get<IDataStore<ShoppingList>>() ?? new MockDataStore();
+        public event PropertyChangedEventHandler PropertyChanged;
 
         bool isBusy = false;
         public bool IsBusy
@@ -22,6 +21,8 @@ namespace ListerMobile.ViewModels
         }
 
         string title = string.Empty;
+
+
         public string Title
         {
             get { return title; }
@@ -29,28 +30,47 @@ namespace ListerMobile.ViewModels
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
+            [CallerMemberName]string property = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
+            //onChanged?.Invoke();
+            //OnPropertyChanged(propertyName);
+            RaisePropertyChanged(property);
+
             return true;
         }
 
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
+        //#region INotifyPropertyChanged
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        //{
+        //    var changed = PropertyChanged;
+        //    if (changed == null)
+        //        return;
 
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //    changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
+        //#endregion
+
+        protected void RaisePropertyChanged(string property)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
-        #endregion
+
+        protected void RaisePropertiesChanged(params string[] propertyNames)
+        {
+            if (propertyNames == null)
+            {
+                RaisePropertyChanged(string.Empty);
+                return;
+            }
+            foreach (string propertyName in propertyNames)
+            {
+                RaisePropertyChanged(propertyName);
+            }
+        }
     }
 }

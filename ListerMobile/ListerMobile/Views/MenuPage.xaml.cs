@@ -1,5 +1,4 @@
 ﻿using ListerMobile.Models;
-using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -18,7 +17,9 @@ namespace ListerMobile.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
+                new HomeMenuItem {Id = MenuItemType.Favourites, Title="Ulubione produkty" },
+                new HomeMenuItem {Id = MenuItemType.MyLists, Title="Moje Listy" },
+                new HomeMenuItem {Id = MenuItemType.Recieved, Title="Odebrane" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" }
             };
 
