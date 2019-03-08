@@ -15,14 +15,27 @@
 
     <ContentPage.Content>
         <StackLayout>
-        <ListView x:Name="ItemsListView"
+            <Label
+                Text="Najnowsze"
+                HorizontalOptions="Center" Margin="0,40,0,15"
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                FontSize="20">
+                <Label.FontFamily>
+                    <OnPlatform x:TypeArguments="x:String">
+                        <On Platform="Android" Value="Lobster-Regular.ttf#Lobster-Regular" />
+                    </OnPlatform>
+                </Label.FontFamily>
+            </Label>
+            
+            <ListView x:Name="ItemsListView"
                 ItemsSource="{Binding ShoppingLists}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
                 RefreshCommand="{Binding LoadItemsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement"
+                CachingStrategy="RetainElement"
                 ItemSelected="OnItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>

@@ -4,6 +4,16 @@
              x:Class="ListerMobile.Views.ItemsPage"
               Title="{Binding Title}"
              x:Name="BrowseItemsPage">
+    <StackLayout>
+        <Label Text="Siemanero jeste głóówno" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16" />
+        <Label Text="STRONĄĄĄ" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+    </StackLayout>
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>

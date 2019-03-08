@@ -6,10 +6,10 @@ namespace ListerMobile.Models
 {
     public enum MenuItemType
     {
-        Favourites,
-        MyLists,
-        Recieved,
-        About
+        Ulubione,
+        Moje_Listy,
+        Odebrane,
+        O_Aplikacji
     }
     public class HomeMenuItem
     {

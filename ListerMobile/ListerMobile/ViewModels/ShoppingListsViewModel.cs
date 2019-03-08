@@ -15,7 +15,7 @@ namespace ListerMobile.ViewModels
 
         public ShoppingListsViewModel()
         {
-            Title = "MyLists";
+            Title = "Moje Listki";
             ShoppingLists = new ObservableCollection<ShoppingList>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 

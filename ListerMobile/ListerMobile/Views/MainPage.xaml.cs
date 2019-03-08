@@ -10,9 +10,11 @@ namespace ListerMobile.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+
         public MainPage()
         {
             InitializeComponent();
+
 
             MasterBehavior = MasterBehavior.Popover;
 
@@ -25,13 +27,13 @@ namespace ListerMobile.Views
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.MyLists:
+                    case (int)MenuItemType.Moje_Listy:
                         MenuPages.Add(id, new NavigationPage(new ShoppingListsPage()));
                         break;
-                    case (int)MenuItemType.Favourites:
+                    case (int)MenuItemType.Ulubione:
                         MenuPages.Add(id, new NavigationPage(new FavouriteProductsPage()));
                         break;
-                    case (int)MenuItemType.About:
+                    case (int)MenuItemType.O_Aplikacji:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
                 }
@@ -49,5 +51,31 @@ namespace ListerMobile.Views
                 IsPresented = false;
             }
         }
+
+        //async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        //{
+        //    var item = args.SelectedItem as ShoppingList;
+        //    if (item == null)
+        //        return;
+
+        //    await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
+
+        //    // Manually deselect item.
+        //    ItemsListView.SelectedItem = null;
+        //}
+
+        //async void AddItem_Clicked(object sender, EventArgs e)
+        //{
+        //    await Navigation.PushModalAsync(new NavigationPage(new NewShoppingListPage()));
+        //}
+
+        //protected override void OnAppearing()
+        //{
+        //    base.OnAppearing();
+
+        //    if (viewModel.ShoppingLists.Count == 0)
+        //        viewModel.LoadItemsCommand.Execute(null);
+        //}
+
     }
 }

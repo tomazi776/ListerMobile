@@ -17,10 +17,10 @@ namespace ListerMobile.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Favourites, Title="Ulubione produkty" },
-                new HomeMenuItem {Id = MenuItemType.MyLists, Title="Moje Listy" },
-                new HomeMenuItem {Id = MenuItemType.Recieved, Title="Odebrane" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.Ulubione, Title = MenuItemType.Ulubione.ToString() },
+                new HomeMenuItem {Id = MenuItemType.Moje_Listy, Title=MenuItemType.Moje_Listy.ToString().Replace('_', ' ' )},
+                new HomeMenuItem {Id = MenuItemType.Odebrane, Title = MenuItemType.Odebrane.ToString() },
+                new HomeMenuItem {Id = MenuItemType.O_Aplikacji, Title=MenuItemType.O_Aplikacji.ToString().Replace('_', ' ' ) }
             };
 
             ListViewMenu.ItemsSource = menuItems;
