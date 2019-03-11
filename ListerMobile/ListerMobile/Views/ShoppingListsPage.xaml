@@ -1,8 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ListerMobile.ViewModels"
              x:Class="ListerMobile.Views.ShoppingListsPage"
              Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <viewModels:ShoppingListsViewModel/>
+    </ContentPage.BindingContext>
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
@@ -39,18 +44,27 @@
                 ItemSelected="OnItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
+                    
                     <ViewCell>
                         <StackLayout Padding="10">
                             <Label Text="{Binding Name}" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="16" />
-                            <Label Text="{Binding Body}" 
+                                <Label  Text="{Binding BodyHighlight}" 
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />
+                                <!--<Label Text="{Binding Body[1]}" 
                                 LineBreakMode="NoWrap"
                                 Style="{DynamicResource ListItemDetailTextStyle}"
                                 FontSize="13" />
-                        </StackLayout>
+                                <Label Text="{Binding Body[2]}" 
+                                LineBreakMode="NoWrap"
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13" />-->
+                            </StackLayout>
                     </ViewCell>
+                    
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

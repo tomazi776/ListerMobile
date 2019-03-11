@@ -9,14 +9,14 @@ namespace ListerMobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShoppingListsPage : ContentPage
     {
-        ShoppingListsViewModel viewModel;
+        //ShoppingListsViewModel viewModel;
 
         //private ListView ItemsListView = new ListView();     // NWM czy to siądzie
 
         public ShoppingListsPage()
         {
             InitializeComponent();
-            BindingContext = viewModel = new ShoppingListsViewModel();
+            //BindingContext = viewModel = new ShoppingListsViewModel();
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -39,9 +39,19 @@ namespace ListerMobile.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            InitializeBindingContext();
 
-            if (viewModel.ShoppingLists.Count == 0)
+            //if (viewModel.ShoppingLists.Count == 0)
+            //    viewModel.LoadItemsCommand.Execute(null);
+        }
+
+        private void InitializeBindingContext()
+        {
+            ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
+            if (viewModel != null && viewModel.ShoppingLists.Count == 0)
+            {
                 viewModel.LoadItemsCommand.Execute(null);
+            }
         }
     }
 }

@@ -21,14 +21,6 @@ namespace ListerMobile.Views
         public ShoppingListDetailPage()
         {
             InitializeComponent();
-
-            //var item = new ShoppingList
-            //{
-            //    Name = "Lista zakupów 1",
-            //    Body = "To jest body takiej jednej listy zakupów."
-            //};
-
-            //viewModel = new ShoppingListDetailViewModel(item);
             BindingContext = viewModel;
         }
     }
