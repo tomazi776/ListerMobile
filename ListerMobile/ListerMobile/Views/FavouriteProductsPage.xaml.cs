@@ -21,11 +21,11 @@ namespace ListerMobile.Views
         {
             InitializeComponent();
 
-            var item = new Product
-            {
-                Name = "Czekolada grubasku.",
-                Picture = "Czekolada grubasku."
-            };
+            var item = new Product("Czekolada grubasku.", null, null, "zdjecie");
+            //{
+            //    Name = "Czekolada grubasku.",
+            //    Picture = "Czekolada grubasku."
+            //};
             //Products.Add(item);
 
             viewModel = new FavouriteProductsViewModel(item);

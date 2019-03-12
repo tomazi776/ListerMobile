@@ -30,6 +30,8 @@ namespace ListerMobile.ViewModels
             });
         }
 
+
+
         ///// <summary>
         ///// Zrobić Interfejs do tej metody i tej z MockData
         ///// </summary>

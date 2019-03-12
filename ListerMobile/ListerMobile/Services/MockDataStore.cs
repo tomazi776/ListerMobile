@@ -12,34 +12,32 @@ namespace ListerMobile.Services
         List<string> ProductsOfFirstList = new List<string>();
         List<string> ProductsOfSecondList = new List<string>();
 
-        Dictionary<int, List<string>> SpecificListProducts = new Dictionary<int, List<string>>();
-
-
         public MockDataStore()
         {
             User user1 = new User { Id = 1, Name = "Tomala" };
 
             Product[] FirstListProducts = new Product[]
             {
-                new Product {Name = "- Mleko" } ,
-                new Product {Name = "- Kapusta" } ,
-                new Product {Name = "- Czekolaa" },
+                 new Product("- Kupak") ,
+                 new Product("- Kapusta"),
+                 new Product("- Czekolada"),
 
-                new Product {Name = "- CZYRAK" } ,
-                new Product {Name = "- PUSCIO" } ,
-                new Product {Name = "- LUL" }
+                 new Product("- CZYRAK"),
+                 new Product("- PUCIO"),
+                 new Product("- LUL")
 
             };
 
             Product[] SecondListProducts = new Product[]
             {
-                new Product {Name = "- Ser" } ,
-                new Product {Name = "- Koperek" } ,
-                new Product {Name = "- Śluz" },
 
-                new Product {Name = "- Żyletki" } ,
-                new Product {Name = "- Wino" } ,
-                new Product {Name = "- Świece zapachowe" }
+                 new Product("- Ser") ,
+                 new Product("- Koperek"),
+                 new Product("- Śluz"),
+
+                 new Product("- Żyletki"),
+                 new Product("- Wino"),
+                 new Product("- Świece zapachowe")
 
             };
 
@@ -55,14 +53,11 @@ namespace ListerMobile.Services
             }
 
 
-
             shoppingLists = new List<ShoppingList>();
             var mockItems = new List<ShoppingList>
             {
                 new ShoppingList { Id =1, CreationDate = DateTime.Today, Name = "Poniedzialek 04.03.19" ,Products = FirstListProducts , Body = string.Join("" + Environment.NewLine, ProductsOfFirstList.ToArray()),  BodyHighlight = TakeElements(ProductsOfFirstList)  , User = user1  },
                 new ShoppingList { Id =2, CreationDate = DateTime.Today, Name = "Wtorek 05.03.19",Products = SecondListProducts, Body = string.Join("" + Environment.NewLine, ProductsOfSecondList.ToArray()) , BodyHighlight = TakeElements(ProductsOfSecondList), User = user1  },
-                //new Item { Id = Guid.NewGuid().ToString(), Text = "Fifth item", Description="This is an item description." },
-                //new Item { Id = Guid.NewGuid().ToString(), Text = "Sixth item", Description="This is an item description." },
             };
             foreach (var item in mockItems)
             {
@@ -104,40 +99,6 @@ namespace ListerMobile.Services
             return await Task.FromResult(shoppingLists);
         }
 
-        //private void AddProductsToList(List<Product> products)
-        //{
-        //    //SpecificListProducts.Add(0,ProductsOfList)
-
-        //    foreach (var item in products)
-        //    {
-        //        //item.Name.ToString()
-        //        ProductsOfList?.Clear();
-        //        ProductsOfList.Add(products[].it);
-        //    }
-        //}
-
-        //private void AddTo(Product[] productArray, List<string> list)
-        //{
-        //    foreach (var item in productArray)
-        //    {
-        //        //item.Name.ToString()
-        //        list?.Clear();
-        //        list.Add(productArray.Name.ToString());
-
-
-        //    }
-        //}
-
-
-        //private void MakeEntryOfListsAndProducts(int num, List<String> list)
-        //{
-        //        SpecificListProducts.Add(num, list);
-
-        //        var acoto = SpecificListProducts.ElementAt(i).Value.Take(i);
-
-        //        MakeBody(acoto);
-        //}
-
         private void MakeBody(IEnumerable<string> fromList)
         {
             string.Join("" + Environment.NewLine, fromList.ToArray());
@@ -146,17 +107,8 @@ namespace ListerMobile.Services
 
         private string TakeElements(List<string> list)
         {
-
             var firstFewElements = list.Take(3);
             return firstFewElements.ElementAt(0) + Environment.NewLine + firstFewElements.ElementAt(1) + Environment.NewLine + firstFewElements.ElementAt(2) + Environment.NewLine;
-
-
-
-
-            //return string.Join(" ", firstFewElements.ToArray());
-
-            //StringBuilder sb = new StringBuilder();
-            //sb.Append(Environment.NewLine, );
         }
     }
 }
