@@ -4,7 +4,7 @@
              x:Class="ListerMobile.Views.NewShoppingListPage">
   <!--Pages can be added as references or inline-->
     
-    <TabbedPage.ToolbarItems>
+    <!--<TabbedPage.ToolbarItems>
         <ToolbarItem Text="Cancel" Clicked="Cancel_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -19,22 +19,53 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </TabbedPage.ToolbarItems>
+    </TabbedPage.ToolbarItems>-->
     
     <ContentPage Title="Zwykła Lista">
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding ShoppingList.Name}" FontSize="Small" />
-            <Label Text="Description" FontSize="Medium" />
+        <StackLayout Spacing="15" Padding="15">
+            <Label Text="Nazwa Listy" FontSize="Medium" />
+            <Entry Text="{Binding ShoppingList.Name}" FontSize="Small" Placeholder="Dzisiejsza data" />
+            <Label Text="Treść" FontSize="Medium" />
             <Editor x:Name="BodyEditor"
                     Text="{Binding ShoppingList.Body}"
                     FontSize="Small" 
                     Margin="0"
                     AutoSize="TextChanges"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="0.3*"/>
+                </Grid.RowDefinitions>
+                <ImageButton x:Name="CancelImageBtn" Grid.Row="1" Grid.Column="0" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
+                <ImageButton x:Name="SaveImageBtn" Grid.Row="1" Grid.Column="1" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
+
+            </Grid>
+            <ImageButton>
+                
+            </ImageButton>
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Lista Głosowa">
-        <Label Text="Tu bedzie mozna tworzyc liste głosową"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.13*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.13*"/>
+                <RowDefinition Height="1.4*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Text="Tu bedzie mozna tworzyc liste głosową"/>
+
+            <ImageButton Grid.Row="1" Source="mic_icon.png" Aspect="AspectFit">
+                
+            </ImageButton>
+            
+
+        </Grid>
+
     </ContentPage> 
 
 
