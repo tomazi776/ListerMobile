@@ -6,9 +6,15 @@
 
     <StackLayout Spacing="20" Padding="15"
         Orientation="Vertical">
-        <Label Text="Text:SIEMANERO" FontSize="Medium" />
+        <Label Text="Ulubione" FontSize="Medium">
+            <Label.FontFamily>
+                <OnPlatform x:TypeArguments="x:String">
+                    <On Platform="Android" Value="Lobster-Regular.ttf#Lobster-Regular" />
+                </OnPlatform>
+            </Label.FontFamily>
+        </Label>
         <Label Text="{Binding Product.Name}" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
+        <Label Text="Banany, Jabłka, rodzynki, patelnia, małże" FontSize="Medium" />
         <Label Text="Zdjęcie produktu" FontSize="Small"/>
     </StackLayout>
 

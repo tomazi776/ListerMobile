@@ -44,6 +44,9 @@
                 <ImageButton x:Name="SaveImageBtn" Grid.Row="1" Grid.Column="1" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
 
             </Grid>
+            <ImageButton>
+                
+            </ImageButton>
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Lista Głosowa">
@@ -57,12 +60,13 @@
             <Label Grid.Row="0" Text="Tu bedzie mozna tworzyc liste głosową"/>
 
             <ImageButton Grid.Row="1" Source="mic_icon.png" Aspect="AspectFit">
-
+                
             </ImageButton>
+            
 
         </Grid>
 
-    </ContentPage>
+    </ContentPage> 
 
 
 
