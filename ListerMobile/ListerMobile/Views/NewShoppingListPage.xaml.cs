@@ -14,6 +14,7 @@ namespace ListerMobile.Views
     {
         public ShoppingList ShoppingList { get; set; }
         public List<string> NewListProducts = new List<string>();
+        public bool IsNewVoiceListClicked { get; set; }
         private ISpeechToText speechRecongnitionInstance;
 
         public NewShoppingListPage()
@@ -60,14 +61,26 @@ namespace ListerMobile.Views
             for (int i = 0; i < recievedText.Length; i++)
             {
 
-                result += "\r\n- " + recievedText[i];
+                result += "- " + recievedText[i] + "\r\n";
             }
 
-
-
-            VoiceBodyEditor.Text = result;
+            CheckForVoiceButtonClicked(result);
+            //VoiceBodyEditor.Text = result;
         }
 
+        private void CheckForVoiceButtonClicked(string result)
+        {
+            if (IsNewVoiceListClicked)
+            {
+                VoiceBodyEditor.Text = result;
+                IsNewVoiceListClicked = false;
+            }
+            else
+            {
+                VoiceBodyEditor.Text += result;
+            }
+
+        }
 
         private string GetTodaysDate()
         {
@@ -85,8 +98,15 @@ namespace ListerMobile.Views
         async void Save_Clicked(object sender, EventArgs e)
         {
             ShoppingList.BodyHighlight = MakeHighlightFromBody(ShoppingList.Body);
+            TrimEndingOfBody(ShoppingList.Body);
             MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
             await Navigation.PopModalAsync();
+        }
+
+        private void TrimEndingOfBody(string body)
+        {
+            var a = body.Last();
+            var b = "dupakl";
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
@@ -136,7 +156,18 @@ namespace ListerMobile.Views
             //MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) => {
 
             //});
+            IsNewVoiceListClicked = true;
+            InvokeConcreteImplementation();
 
+        }
+
+        private void SpeakAddButton_Clicked(object sender, EventArgs e)
+        {
+            InvokeConcreteImplementation();
+        }
+
+        private void InvokeConcreteImplementation()
+        {
             try
             {
                 speechRecongnitionInstance.StartSpeechToText();
@@ -145,7 +176,6 @@ namespace ListerMobile.Views
             {
                 System.Console.WriteLine(ex.Message);
             }
-
         }
     }
 }

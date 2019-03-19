@@ -27,7 +27,7 @@
     
     <ContentPage Title="Zwykła">
         <StackLayout Spacing="15" Padding="15">
-            <Label Text="Nazwa Listy" FontSize="Medium" />
+            <Label Text="Nazwa Listy" FontSize="Small" />
             <Entry Text="{Binding ShoppingList.Name}" FontSize="Small" Placeholder="Dzisiejsza data" />
             <Label Text="Treść" FontSize="Medium" />
             <Editor x:Name="BodyEditor"
@@ -66,23 +66,48 @@
         </Grid>-->
 
         <StackLayout Spacing="15" Padding="15">
-            <Label Text="Nazwa Listy" FontSize="Medium" />
+            <Label Text="Nazwa Listy" FontSize="Small" />
             <Entry Text="{Binding ShoppingList.Name}" FontSize="Small" Placeholder="Dzisiejsza data" />
-            <ImageButton Source="mic_icon.png" HeightRequest="60" Clicked="SpeakButton_Clicked"/>
-            <Label Grid.Row="1" Text="Treść" FontSize="Medium" />
-            <Editor x:Name="VoiceBodyEditor"
-                        Grid.Row="2"
-                    Text="{Binding ShoppingList.Body}"
-                    FontSize="Small" 
-                    Margin="0"
-                    AutoSize="TextChanges"/>
-            <Grid>
+
+            <Grid Padding="0" Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="65"/>
+                    <RowDefinition Height="65"/>
+                </Grid.RowDefinitions>
+                <ImageButton Grid.Column="0" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Clicked="SpeakButton_Clicked"/>
+                <Label Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" Text="Od nowa"/>
+                <ImageButton Grid.Column="1" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Clicked="SpeakAddButton_Clicked"/>
+                <Label Grid.Column="1" Grid.Row="1" Text="Dodaj kolejne" HorizontalOptions="Center"/>
+            </Grid>
+
+
+
+            <Label Text="Treść" FontSize="Small" Margin="0" />
+
+            <Grid Padding="0" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <ImageButton Grid.Column="0" VerticalOptions="Center" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
-                <ImageButton Grid.Column="1" VerticalOptions="Center" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4.5*"/>
+                    <RowDefinition Height="0.5*"/>
+                    <RowDefinition Height="2.5*"/>
+                </Grid.RowDefinitions>
+
+                        <Editor x:Name="VoiceBodyEditor" Grid.ColumnSpan="2"
+                        Grid.Row="0"
+                    Text="{Binding ShoppingList.Body}"
+                    FontSize="Small" 
+                    Margin="0"
+                    AutoSize="TextChanges"/>
+                
+                <ImageButton Grid.Column="0" Grid.Row="2" VerticalOptions="Center" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
+                <ImageButton Grid.Column="1" Grid.Row="2" VerticalOptions="Center" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
             </Grid>
 
 
