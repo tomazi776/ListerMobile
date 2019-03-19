@@ -1,4 +1,5 @@
 ﻿using ListerMobile.Models;
+using ListerMobile.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace ListerMobile.Views
     {
         public ShoppingList ShoppingList { get; set; }
         public List<string> NewListProducts = new List<string>();
+        public bool IsNewVoiceListClicked { get; set; }
+        private ISpeechToText speechRecongnitionInstance;
 
         public NewShoppingListPage()
         {
@@ -28,8 +31,56 @@ namespace ListerMobile.Views
                 BodyHighlight = "- trzy - przykładowe - produkty"
             };
 
+            try
+            {
+                speechRecongnitionInstance = DependencyService.Get<ISpeechToText>();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+            }
+
+            MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
+            {
+                SpeechToTextFinalResultRecieved(args);
+            });
+
+
+            MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
+            {
+                SpeechToTextFinalResultRecieved(args);
+            });
+
         }
 
+        private void SpeechToTextFinalResultRecieved(string args)
+        {
+            var recievedText = GetWords(args);
+            string result = string.Empty;
+
+            for (int i = 0; i < recievedText.Length; i++)
+            {
+
+                result += "- " + recievedText[i] + "\r\n";
+            }
+
+            CheckForVoiceButtonClicked(result);
+            //VoiceBodyEditor.Text = result;
+        }
+
+        private void CheckForVoiceButtonClicked(string result)
+        {
+            if (IsNewVoiceListClicked)
+            {
+                VoiceBodyEditor.Text = result;
+                IsNewVoiceListClicked = false;
+            }
+            else
+            {
+                VoiceBodyEditor.Text += result;
+            }
+
+        }
 
         private string GetTodaysDate()
         {
@@ -47,8 +98,15 @@ namespace ListerMobile.Views
         async void Save_Clicked(object sender, EventArgs e)
         {
             ShoppingList.BodyHighlight = MakeHighlightFromBody(ShoppingList.Body);
+            TrimEndingOfBody(ShoppingList.Body);
             MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
             await Navigation.PopModalAsync();
+        }
+
+        private void TrimEndingOfBody(string body)
+        {
+            var a = body.Last();
+            var b = "dupakl";
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
@@ -93,5 +151,31 @@ namespace ListerMobile.Views
             return words.ToArray();
         }
 
+        private void SpeakButton_Clicked(object sender, EventArgs e)
+        {
+            //MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) => {
+
+            //});
+            IsNewVoiceListClicked = true;
+            InvokeConcreteImplementation();
+
+        }
+
+        private void SpeakAddButton_Clicked(object sender, EventArgs e)
+        {
+            InvokeConcreteImplementation();
+        }
+
+        private void InvokeConcreteImplementation()
+        {
+            try
+            {
+                speechRecongnitionInstance.StartSpeechToText();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
