@@ -6,8 +6,11 @@
     
     <StackLayout Spacing="20" Padding="15">
         <Label Text="Nazwa Listy:" FontSize="Medium" />
-        <Label Text="{Binding ShoppingList.Name}" FontSize="Small"/>
+        <Entry Text="{Binding ShoppingList.Name}" FontSize="Small"/>
         <Label Text="Produkty:" FontSize="Medium" />
-        <Label Text="{Binding ShoppingList.Body}" FontSize="Small"/>
+        <ScrollView>
+            <Editor Text="{Binding ShoppingList.Body}" FontSize="Small"/>
+
+        </ScrollView>
     </StackLayout>
 </ContentPage>

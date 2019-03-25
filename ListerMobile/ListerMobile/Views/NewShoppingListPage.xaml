@@ -46,29 +46,13 @@
                 </Grid.RowDefinitions>
                 <ImageButton x:Name="CancelImageBtn" Grid.Row="1" Grid.Column="0" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
                 <ImageButton x:Name="SaveImageBtn" Grid.Row="1" Grid.Column="1" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
-
             </Grid>
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Głosowa">
-        <!--<Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.13*"/>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="0.13*"/>
-                <RowDefinition Height="1.4*"/>
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0" Text="Tu bedzie mozna tworzyc liste głosową"/>
-
-            <ImageButton Grid.Row="2" Source="mic_icon.png" Aspect="AspectFit" Clicked="SpeakButton_Clicked">
-                
-            </ImageButton>
-        </Grid>-->
-
         <StackLayout Spacing="15" Padding="15">
             <Label Text="Nazwa Listy" FontSize="Small" />
             <Entry Text="{Binding ShoppingList.Name}" FontSize="Small" Placeholder="Dzisiejsza data" />
-
             <Grid Padding="0" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -83,11 +67,7 @@
                 <ImageButton Grid.Column="1" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Clicked="SpeakAddButton_Clicked"/>
                 <Label Grid.Column="1" Grid.Row="1" Text="Dodaj kolejne" HorizontalOptions="Center"/>
             </Grid>
-
-
-
             <Label Text="Treść" FontSize="Small" Margin="0" />
-
             <Grid Padding="0" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -98,24 +78,15 @@
                     <RowDefinition Height="0.5*"/>
                     <RowDefinition Height="2.5*"/>
                 </Grid.RowDefinitions>
-
-                        <Editor x:Name="VoiceBodyEditor" Grid.ColumnSpan="2"
-                        Grid.Row="0"
-                    Text="{Binding ShoppingList.Body}"
-                    FontSize="Small" 
-                    Margin="0"
-                    AutoSize="TextChanges"/>
-                
+                <Editor x:Name="VoiceBodyEditor" Grid.ColumnSpan="2"
+                            Grid.Row="0"
+                            Text="{Binding ShoppingList.Body}"
+                            FontSize="Small" 
+                            Margin="0"
+                            AutoSize="TextChanges"/>
                 <ImageButton Grid.Column="0" Grid.Row="2" VerticalOptions="Center" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
                 <ImageButton Grid.Column="1" Grid.Row="2" VerticalOptions="Center" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
             </Grid>
-
-
-            
         </StackLayout>
-
     </ContentPage> 
-
-
-
 </TabbedPage>
