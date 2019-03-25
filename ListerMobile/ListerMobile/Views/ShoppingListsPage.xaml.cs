@@ -43,14 +43,14 @@ namespace ListerMobile.Views
             base.OnAppearing();
             InitializeBindingContext();
 
-            if (viewModel.ShoppingLists.Count == 0)
+            if (viewModel.MyShoppingLists.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
 
         private void InitializeBindingContext()
         {
             ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
-            if (viewModel != null && viewModel.ShoppingLists.Count == 0)
+            if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
             {
                 viewModel.LoadItemsCommand.Execute(null);
             }
@@ -63,5 +63,6 @@ namespace ListerMobile.Views
             if (item == null) return;
             await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
         }
+
     }
 }

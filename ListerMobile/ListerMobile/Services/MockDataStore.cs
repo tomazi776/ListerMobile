@@ -9,6 +9,8 @@ namespace ListerMobile.Services
     public class MockDataStore : IDataStore<ShoppingList>
     {
         List<ShoppingList> shoppingLists;
+        List<ShoppingList> receivedShoppingLists;
+
         List<string> ProductsOfFirstList = new List<string>();
         List<string> ProductsOfSecondList = new List<string>();
 
@@ -98,12 +100,6 @@ namespace ListerMobile.Services
         {
             return await Task.FromResult(shoppingLists);
         }
-
-        private void MakeBody(IEnumerable<string> fromList)
-        {
-            string.Join("" + Environment.NewLine, fromList.ToArray());
-        }
-
 
         private string TakeElements(List<string> list)
         {

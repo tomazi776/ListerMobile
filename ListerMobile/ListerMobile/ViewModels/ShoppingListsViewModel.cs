@@ -10,19 +10,20 @@ namespace ListerMobile.ViewModels
 {
     public class ShoppingListsViewModel : BaseViewModel
     {
-        public ObservableCollection<ShoppingList> ShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
+        public ObservableCollection<ShoppingList> MyShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
+        public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
         public Command LoadItemsCommand { get; set; }
 
         public ShoppingListsViewModel()
         {
-            Title = "Moje Listki";
+            Title = "Moje Listy";
             //ShoppingLists = new ObservableCollection<ShoppingList>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
             {
                 var newShoppingList = item as ShoppingList;
-                ShoppingLists.Add(newShoppingList);
+                MyShoppingLists.Add(newShoppingList);
 
                 //MakeHighlightBody();
 
@@ -53,11 +54,12 @@ namespace ListerMobile.ViewModels
 
             try
             {
-                ShoppingLists.Clear();
+                MyShoppingLists.Clear();
                 var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
-                    ShoppingLists.Add(item);
+                    MyShoppingLists.Add(item);
+                    ReceivedShoppingLists.Add(item);
                 }
             }
             catch (Exception ex)
@@ -69,6 +71,19 @@ namespace ListerMobile.ViewModels
                 IsBusy = false;
             }
         }
+
+        //async Task ExecuteDeleteItemCommand()
+        //{
+        //    try
+        //    {
+        //        var items = await DataStore.DeleteItemAsync()
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
     }
 }
