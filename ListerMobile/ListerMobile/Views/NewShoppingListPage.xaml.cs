@@ -61,11 +61,9 @@ namespace ListerMobile.Views
             for (int i = 0; i < recievedText.Length; i++)
             {
 
-                result += "- " + recievedText[i] + "\r\n";
+                result += "- " + recievedText[i] + "\n";
             }
-
             CheckForVoiceButtonClicked(result);
-            //VoiceBodyEditor.Text = result;
         }
 
         private void CheckForVoiceButtonClicked(string result)
@@ -79,7 +77,6 @@ namespace ListerMobile.Views
             {
                 VoiceBodyEditor.Text += result;
             }
-
         }
 
         private string GetTodaysDate()
@@ -93,34 +90,23 @@ namespace ListerMobile.Views
             return output;
         }
 
-
-
         async void Save_Clicked(object sender, EventArgs e)
         {
-            ShoppingList.BodyHighlight = MakeHighlightFromBody(ShoppingList.Body);
-            TrimEndingOfBody(ShoppingList.Body);
+            AdjustRecievedInput(ShoppingList.Body);
             MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
             await Navigation.PopModalAsync();
         }
 
-        private void TrimEndingOfBody(string body)
+        private void AdjustRecievedInput(string body)
         {
-            var a = body.Last();
-            var b = "dupakl";
+            ShoppingList.Body = body.TrimEnd('\r', '\n', ' ', ',', '.');
+            ShoppingList.BodyHighlight = MakeHighlightFromBody(body);
         }
 
         async void Cancel_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }
-
-
-        private string[] GetProductNamesFromBody(string body)
-        {
-            var temp = GetWords(body);
-            return temp;
-        }
-
 
         private string MakeHighlightFromBody(string body)
         {
@@ -130,15 +116,14 @@ namespace ListerMobile.Views
             {
                 if (bodyElement.Length >= 4)
                 {
-                    result = "\r\n- " + bodyElement[0] + "\r\n- " + bodyElement[1] + "\r\n- " + bodyElement[2];
+                    result = "\n- " + bodyElement[0] + "\n- " + bodyElement[1] + "\n- " + bodyElement[2];
                     return result;
                 }
-                var temp = "\r\n- " + bodyElement[i];
+                var temp = "\n- " + bodyElement[i];
                 result += temp;
             }
             return result;
         }
-
 
         static string[] GetWords(string input)
         {
@@ -153,12 +138,8 @@ namespace ListerMobile.Views
 
         private void SpeakButton_Clicked(object sender, EventArgs e)
         {
-            //MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) => {
-
-            //});
             IsNewVoiceListClicked = true;
             InvokeConcreteImplementation();
-
         }
 
         private void SpeakAddButton_Clicked(object sender, EventArgs e)

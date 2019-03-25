@@ -9,18 +9,20 @@ namespace ListerMobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShoppingListsPage : ContentPage
     {
-        //ShoppingListsViewModel viewModel;
+
+        ShoppingListsViewModel viewModel;
 
         //private ListView ItemsListView = new ListView();     // NWM czy to siądzie
 
         public ShoppingListsPage()
         {
             InitializeComponent();
-            //BindingContext = viewModel = new ShoppingListsViewModel();
+            BindingContext = viewModel = new ShoppingListsViewModel();
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
+
             var item = args.SelectedItem as ShoppingList;
             if (item == null)
                 return;
@@ -41,8 +43,8 @@ namespace ListerMobile.Views
             base.OnAppearing();
             InitializeBindingContext();
 
-            //if (viewModel.ShoppingLists.Count == 0)
-            //    viewModel.LoadItemsCommand.Execute(null);
+            if (viewModel.ShoppingLists.Count == 0)
+                viewModel.LoadItemsCommand.Execute(null);
         }
 
         private void InitializeBindingContext()
@@ -52,6 +54,14 @@ namespace ListerMobile.Views
             {
                 viewModel.LoadItemsCommand.Execute(null);
             }
+        }
+
+        private async void EditListButton_Clicked(object sender, EventArgs e)
+        {
+            ImageButton btn = sender as ImageButton;
+            var item = btn.BindingContext as ShoppingList;
+            if (item == null) return;
+            await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
         }
     }
 }
