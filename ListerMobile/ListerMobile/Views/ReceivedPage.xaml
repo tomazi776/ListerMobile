@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:ListerMobile.ViewModels"
-             x:Class="ListerMobile.Views.ShoppingListsPage"
+             x:Class="ListerMobile.Views.ReceivedPage"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <viewModels:ShoppingListsViewModel/>
     </ContentPage.BindingContext>
-    
-    <ContentPage.ToolbarItems>
+
+    <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -16,7 +16,7 @@
                 </OnPlatform>
             </ToolbarItem.Icon>
         </ToolbarItem>
-    </ContentPage.ToolbarItems>
+    </ContentPage.ToolbarItems>-->
 
     <ContentPage.Content>
         <StackLayout>
@@ -33,19 +33,18 @@
                 </Label.FontFamily>
             </Label>
             <ListView x:Name="ItemsListView" SeparatorColor="Black"
-                ItemsSource="{Binding MyShoppingLists}"
+                ItemsSource="{Binding ReceivedShoppingLists}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="True"
                 RefreshCommand="{Binding LoadItemsCommand}"
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Name}" 
+                CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Name}" 
                                 LineBreakMode="NoWrap" 
                                 Style="{DynamicResource ListItemTextStyle}" 
                                 FontSize="16"
@@ -67,7 +66,7 @@
                                                  HeightRequest="30"
                                                  WidthRequest="30"
                                                  BackgroundColor="Transparent" 
-                                                 BorderColor="Transparent" IsEnabled="True">
+                                                 BorderColor="Transparent">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal">
@@ -94,8 +93,7 @@
                                         HeightRequest="30"
                                         WidthRequest="30"
                                         BackgroundColor="Transparent" 
-                                        BorderColor="Transparent" 
-                                        Clicked="EditListButton_Clicked" >
+                                        BorderColor="Transparent"  >
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal">
@@ -122,7 +120,7 @@
                                         HeightRequest="30"
                                         WidthRequest="30"
                                         BackgroundColor="Transparent" 
-                                        BorderColor="Transparent" >
+                                        BorderColor="Transparent"  >
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal">
@@ -143,11 +141,11 @@
                                     </ImageButton>
                                 </Grid>
                             </StackLayout>
-                    </ViewCell>
-                    
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+                        </ViewCell>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

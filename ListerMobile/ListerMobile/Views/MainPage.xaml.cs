@@ -36,6 +36,9 @@ namespace ListerMobile.Views
                     case (int)MenuItemType.O_Aplikacji:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
                         break;
+                    case (int)MenuItemType.Odebrane:
+                        MenuPages.Add(id, new NavigationPage(new ReceivedPage()));
+                        break;
                 }
             }
 
