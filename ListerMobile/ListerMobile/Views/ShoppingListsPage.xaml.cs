@@ -43,17 +43,17 @@ namespace ListerMobile.Views
             base.OnAppearing();
             InitializeBindingContext();
 
-            if (viewModel.MyShoppingLists.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            //if (viewModel.MyShoppingLists.Count == 0)
+            //    viewModel.LoadItemsCommand.Execute(null);
         }
 
         private void InitializeBindingContext()
         {
             ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
-            if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
-            {
-                viewModel.LoadItemsCommand.Execute(null);
-            }
+            //if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
+            //{
+            //    viewModel.LoadItemsCommand.Execute(null);
+            //}
         }
 
         private async void EditListButton_Clicked(object sender, EventArgs e)

@@ -1,37 +1,55 @@
 ﻿using ListerMobile.Models;
+using ListerMobile.Services;
 using ListerMobile.Views;
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace ListerMobile.ViewModels
 {
-    public class ShoppingListsViewModel : BaseViewModel
+    public class ShoppingListsViewModel : BaseViewModel, INotifyPropertyChanged
     {
-        public ObservableCollection<ShoppingList> MyShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
+        public ObservableCollection<ShoppingList> MyOldShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
         public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
         public Command LoadItemsCommand { get; set; }
+
+        private List<ShoppingList> _myShoppingLists;
+        public List<ShoppingList> MyShoppingLists
+        {
+            get { return _myShoppingLists; }
+            set { SetProperty(ref _myShoppingLists, value); }
+        }
+
+
 
         public ShoppingListsViewModel()
         {
             Title = "Moje Listy";
             //ShoppingLists = new ObservableCollection<ShoppingList>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            //LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
             MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
             {
                 var newShoppingList = item as ShoppingList;
-                MyShoppingLists.Add(newShoppingList);
+                MyOldShoppingLists.Add(newShoppingList);
 
                 //MakeHighlightBody();
 
                 await DataStore.AddItemAsync(newShoppingList);
             });
+
+            InitializeDataAsync();
         }
 
+        private async Task InitializeDataAsync()
+        {
+            var shoppingListsServices = new ShoppingListsServices();
 
+            MyShoppingLists = await shoppingListsServices.GetShoppingListsAsync();
+            var aaa = "ddd";
+        }
 
         ///// <summary>
         ///// Zrobić Interfejs do tej metody i tej z MockData
@@ -45,32 +63,32 @@ namespace ListerMobile.ViewModels
         //    return firstFewElements.ElementAt(0) + Environment.NewLine + firstFewElements.ElementAt(1) + Environment.NewLine + firstFewElements.ElementAt(2) + Environment.NewLine;
         //}
 
-        async Task ExecuteLoadItemsCommand()
-        {
-            if (IsBusy)
-                return;
+        //async Task ExecuteLoadItemsCommand()
+        //{
+        //    if (MyShoppingLists)
+        //        return;
 
-            IsBusy = true;
+        //    MyShoppingLists = true;
 
-            try
-            {
-                MyShoppingLists.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    MyShoppingLists.Add(item);
-                    ReceivedShoppingLists.Add(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
+        //    try
+        //    {
+        //        MyShoppingLists.Clear();
+        //        var items = await DataStore.GetItemsAsync(true);
+        //        foreach (var item in items)
+        //        {
+        //            MyShoppingLists.Add(item);
+        //            ReceivedShoppingLists.Add(item);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex);
+        //    }
+        //    finally
+        //    {
+        //        MyShoppingLists = false;
+        //    }
+        //}
 
         //async Task ExecuteDeleteItemCommand()
         //{
