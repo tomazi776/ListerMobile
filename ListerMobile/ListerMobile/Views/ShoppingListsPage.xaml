@@ -64,7 +64,7 @@
 
 
                 <ListView x:Name="ItemsListView" SeparatorColor="White" VerticalScrollBarVisibility="Always"
-                ItemsSource="{Binding MyOldShoppingLists}"
+                ItemsSource="{Binding MyShoppingLists}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="True"
                 RefreshCommand="{Binding LoadItemsCommand}"

@@ -47,14 +47,14 @@ namespace ListerMobile.Views
             base.OnAppearing();
             InitializeBindingContext();
 
-            if (viewModel.MyOldShoppingLists.Count == 0)
+            if (viewModel.MyShoppingLists.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
 
         private void InitializeBindingContext()
         {
             ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
-            if (viewModel != null && viewModel.MyOldShoppingLists.Count == 0)
+            if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
             {
                 viewModel.LoadItemsCommand.Execute(null);
             }

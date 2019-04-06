@@ -97,7 +97,7 @@ namespace ListerMobile.Views
             await Navigation.PopModalAsync();
         }
 
-        private void AdjustRecievedInput(string body)
+        private void AdjustRecievedInput(string body)           // move method to ShoppingListsViewModel
         {
             ShoppingList.Body = body.TrimEnd('\r', '\n', ' ', ',', '.');
             ShoppingList.BodyHighlight = MakeHighlightFromBody(body);
@@ -108,7 +108,7 @@ namespace ListerMobile.Views
             await Navigation.PopModalAsync();
         }
 
-        private string MakeHighlightFromBody(string body)
+        private string MakeHighlightFromBody(string body)       // move method to ShoppingListsViewModel
         {
             var bodyElement = GetWords(body);
             string result = string.Empty;

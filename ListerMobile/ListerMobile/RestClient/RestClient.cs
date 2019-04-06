@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,7 +14,7 @@ namespace ListerMobile.RestClient
         private const string WEB_SERVICE_URI = "http://sample1app.azurewebsites.net/";
         private const int PORT = 56085;
 
-        public async Task<List<T>> GetAsync()
+        public async Task<ObservableCollection<T>> GetAsync()
         {
 
             try
@@ -25,7 +25,7 @@ namespace ListerMobile.RestClient
 
                     var json = await client.GetStringAsync(WEB_SERVICE_PATH);
                     var dupal = "aaaaa";
-                    var taskModels = JsonConvert.DeserializeObject<List<T>>(json);
+                    var taskModels = JsonConvert.DeserializeObject<ObservableCollection<T>>(json);
                     return taskModels;
                 }
             }
