@@ -20,7 +20,7 @@ namespace ListerMobile.Droid
             // Or you can use global::Android.Resource.Style.ThemeHoloLight
             base.SetTheme(Resource.Style.MainTheme);
 
-
+            Window.SetStatusBarColor(Android.Graphics.Color.ParseColor("#595a4a"));
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;

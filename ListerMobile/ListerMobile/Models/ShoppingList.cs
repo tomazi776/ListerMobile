@@ -7,7 +7,7 @@ namespace ListerMobile.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; } = null;
         public string BodyHighlight { get; set; }
         public string Body { get; set; }
         public User User { get; set; }

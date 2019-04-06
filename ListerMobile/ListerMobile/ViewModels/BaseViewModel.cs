@@ -1,6 +1,5 @@
 ﻿using ListerMobile.Models;
 using ListerMobile.Services;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -29,8 +28,7 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref title, value); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string property = null)
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName]string property = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;

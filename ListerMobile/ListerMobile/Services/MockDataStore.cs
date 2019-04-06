@@ -67,6 +67,30 @@ namespace ListerMobile.Services
             }
         }
 
+
+        //public async Task<List<ShoppingList>> GetItemAsync(int id)
+        //{
+        //    RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
+        //    var shoppingList = await restClient.GetAsync();
+        //    return shoppingList;
+        //}
+
+        public async Task<IEnumerable<ShoppingList>> GetItemsAsync(bool forceRefresh = false)
+        {
+            return await Task.FromResult(shoppingLists);
+        }
+
+        public async Task<ShoppingList> GetItemAsync(int id)
+        {
+            return await Task.FromResult(shoppingLists.FirstOrDefault(s => s.Id == id));
+        }
+
+        //public async Task<IEnumerable<ShoppingList>> GetItemsAsync(bool forceRefresh = false)
+        //{
+        //    return await Task.FromResult(shoppingLists);
+        //}
+
+
         public async Task<bool> AddItemAsync(ShoppingList item)
         {
             shoppingLists.Add(item);
@@ -91,15 +115,7 @@ namespace ListerMobile.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<ShoppingList> GetItemAsync(int id)
-        {
-            return await Task.FromResult(shoppingLists.FirstOrDefault(s => s.Id == id));
-        }
 
-        public async Task<IEnumerable<ShoppingList>> GetItemsAsync(bool forceRefresh = false)
-        {
-            return await Task.FromResult(shoppingLists);
-        }
 
         private string TakeElements(List<string> list)
         {

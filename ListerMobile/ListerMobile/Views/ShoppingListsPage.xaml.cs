@@ -1,4 +1,5 @@
 ﻿using ListerMobile.Models;
+using ListerMobile.Services;
 using ListerMobile.ViewModels;
 using System;
 using Xamarin.Forms;
@@ -17,21 +18,24 @@ namespace ListerMobile.Views
         public ShoppingListsPage()
         {
             InitializeComponent();
+
+            //ItemsListView.Effects
+
             BindingContext = viewModel = new ShoppingListsViewModel();
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
+        //async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        //{
 
-            var item = args.SelectedItem as ShoppingList;
-            if (item == null)
-                return;
+        //    var item = args.SelectedItem as ShoppingList;
+        //    if (item == null)
+        //        return;
 
-            await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
+        //    await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
 
-            // Manually deselect item.
-            ItemsListView.SelectedItem = null;
-        }
+        //    // Manually deselect item.
+        //    ItemsListView.SelectedItem = null;
+        //}
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
@@ -63,6 +67,17 @@ namespace ListerMobile.Views
             if (item == null) return;
             await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
         }
+
+        //private async void HamburgerButton_Clicked(object sender, EventArgs e)
+        //{
+        //    var page = Navigation.NavigationStack;
+        //    page.
+        //}
+
+        //private void SettingsButton_Clicked(object sender, EventArgs e)
+        //{
+
+        //}
 
     }
 }
