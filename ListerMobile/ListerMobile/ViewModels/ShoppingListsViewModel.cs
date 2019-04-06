@@ -46,7 +46,7 @@ namespace ListerMobile.ViewModels
                 //await DataStore.AddItemAsync(newShoppingList);
             });
 
-            InitializeDataAsync();
+            //InitializeDataAsync();
         }
 
         private async Task InitializeDataAsync()
@@ -54,9 +54,7 @@ namespace ListerMobile.ViewModels
             var shoppingListsServices = new ShoppingListsServices();
             MyShoppingLists = await shoppingListsServices.GetShoppingListsAsync();
             AdjustRecievedInput();
-            var aaa = "ddd";
         }
-
 
 
         private void AdjustRecievedInput()           // move method to ShoppingListsViewModel
@@ -65,9 +63,9 @@ namespace ListerMobile.ViewModels
             {
                 item.Body = item.Body.TrimEnd('\r', '\n', ' ', ',', '.');
                 item.BodyHighlight = MakeHighlightFromBody(item.Body);
+                var listDate = DateTime.Parse(item.CreationDate.ToString()).ToString("dd.MM.yy");
+                item.Name += " " + listDate;
             }
-
-
         }
 
         private string MakeHighlightFromBody(string body)       // move method to ShoppingListsViewModel
@@ -109,10 +107,9 @@ namespace ListerMobile.ViewModels
             {
                 MyShoppingLists.Clear();
                 //var items = await DataStore.GetItemsAsync(true);
-                //var shoppingListsServices = new ShoppingListsServices();
-                //var items = await shoppingListsServices.GetShoppingListsAsync();
+                //  //var shoppingListsServices = new ShoppingListsServices();
+                //  //var items = await shoppingListsServices.GetShoppingListsAsyn
                 InitializeDataAsync();
-
 
             }
             catch (Exception ex)
@@ -140,3 +137,4 @@ namespace ListerMobile.ViewModels
 
     }
 }
+
