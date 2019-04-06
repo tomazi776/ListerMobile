@@ -11,7 +11,7 @@ namespace ListerMobile.RestClient
     public class RestClient<T>
     {
         private const string WEB_SERVICE_PATH = "/api/ShoppingLists/";
-        private const string WEB_SERVICE_URI = "http://localhost:";
+        private const string WEB_SERVICE_URI = "http://sample1app.azurewebsites.net/";
         private const int PORT = 56085;
 
         public async Task<List<T>> GetAsync()

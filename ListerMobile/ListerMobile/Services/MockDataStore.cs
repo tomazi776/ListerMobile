@@ -75,15 +75,20 @@ namespace ListerMobile.Services
         //    return shoppingList;
         //}
 
+        public async Task<IEnumerable<ShoppingList>> GetItemsAsync(bool forceRefresh = false)
+        {
+            return await Task.FromResult(shoppingLists);
+        }
+
         public async Task<ShoppingList> GetItemAsync(int id)
         {
             return await Task.FromResult(shoppingLists.FirstOrDefault(s => s.Id == id));
         }
 
-        public async Task<IEnumerable<ShoppingList>> GetItemsAsync(bool forceRefresh = false)
-        {
-            return await Task.FromResult(shoppingLists);
-        }
+        //public async Task<IEnumerable<ShoppingList>> GetItemsAsync(bool forceRefresh = false)
+        //{
+        //    return await Task.FromResult(shoppingLists);
+        //}
 
 
         public async Task<bool> AddItemAsync(ShoppingList item)

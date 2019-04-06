@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 
 namespace ListerWebServices.Models
 {
@@ -14,10 +10,18 @@ namespace ListerWebServices.Models
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
+
         public ShoppingListsContext() : base("name=ShoppingListsContext")
         {
         }
+
+
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    Database.SetInitializer<ShoppingListsContext>(null);
+        //    base.OnModelCreating(modelBuilder);
+        //}
+
 
         public System.Data.Entity.DbSet<ListerMobile.Models.ShoppingList> ShoppingLists { get; set; }
     }

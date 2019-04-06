@@ -1,4 +1,5 @@
 ﻿using ListerMobile.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -14,11 +15,21 @@ namespace ListerMobile.Views
         public MainPage()
         {
             InitializeComponent();
-
+            this.IsPresentedChanged += OnPresentedChanged;
 
             MasterBehavior = MasterBehavior.Popover;
 
             //MenuPages.Add((int)MenuItemType.About, (NavigationPage)Detail);
+        }
+
+        private void OnPresentedChanged(object sender, EventArgs e)
+        {
+            MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", async (obj, item) => { });
+
+            if (this.IsPresented)
+            {
+                int i = 2;
+            }
         }
 
         public async Task NavigateFromMenu(int id)
