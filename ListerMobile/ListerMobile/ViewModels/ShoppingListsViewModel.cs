@@ -14,7 +14,7 @@ namespace ListerMobile.ViewModels
 {
     public class ShoppingListsViewModel : BaseViewModel, INotifyPropertyChanged
     {
-        public ObservableCollection<ShoppingList> MyOldShoppingLists { get; set; }
+        private const string SHOPPING_LISTS_PAGE_TITLE = "Moje Listy";
         public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
         public Command LoadItemsCommand { get; set; }
 
@@ -29,8 +29,7 @@ namespace ListerMobile.ViewModels
 
         public ShoppingListsViewModel()
         {
-            Title = "Moje Listy";
-            //MyOldShoppingLists = new ObservableCollection<ShoppingList>();
+            Title = SHOPPING_LISTS_PAGE_TITLE;
             MyShoppingLists = new ObservableCollection<ShoppingList>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
@@ -38,12 +37,7 @@ namespace ListerMobile.ViewModels
             MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", (obj, item) =>
             {
                 var newShoppingList = item as ShoppingList;
-
                 MyShoppingLists.Add(newShoppingList);
-
-                //MakeHighlightBody();
-
-                //await DataStore.AddItemAsync(newShoppingList);
             });
 
             //InitializeDataAsync();
@@ -57,7 +51,7 @@ namespace ListerMobile.ViewModels
         }
 
 
-        private void AdjustRecievedInput()           // move method to ShoppingListsViewModel
+        private void AdjustRecievedInput()
         {
             foreach (var item in MyShoppingLists)
             {
@@ -68,7 +62,7 @@ namespace ListerMobile.ViewModels
             }
         }
 
-        private string MakeHighlightFromBody(string body)       // move method to ShoppingListsViewModel
+        private string MakeHighlightFromBody(string body)
         {
             var bodyElement = GetWords(body);
             string result = string.Empty;
@@ -85,7 +79,7 @@ namespace ListerMobile.ViewModels
             return result;
         }
 
-        static string[] GetWords(string input)
+        private static string[] GetWords(string input)
         {
             MatchCollection matches = Regex.Matches(input, @"\b[\w']*\b");
 
@@ -106,11 +100,7 @@ namespace ListerMobile.ViewModels
             try
             {
                 MyShoppingLists.Clear();
-                //var items = await DataStore.GetItemsAsync(true);
-                //  //var shoppingListsServices = new ShoppingListsServices();
-                //  //var items = await shoppingListsServices.GetShoppingListsAsyn
                 InitializeDataAsync();
-
             }
             catch (Exception ex)
             {
