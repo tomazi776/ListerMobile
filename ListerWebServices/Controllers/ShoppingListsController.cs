@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using ListerMobile.Models;
+using ListerWebServices.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
-using ListerMobile.Models;
-using ListerWebServices.Models;
 
 namespace ListerWebServices.Controllers
 {
@@ -115,5 +111,6 @@ namespace ListerWebServices.Controllers
         {
             return db.ShoppingLists.Count(e => e.Id == id) > 0;
         }
+
     }
 }

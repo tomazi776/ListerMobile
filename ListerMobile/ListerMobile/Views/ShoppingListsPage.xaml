@@ -46,13 +46,13 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Label
-                Text="Najnowsze"
-                HorizontalOptions="Center" 
-                Margin="0,25,0,0"
-                LineBreakMode="NoWrap" 
-                Style="{DynamicResource ListItemTextStyle}" 
-                FontSize="20"
-                TextColor="White">
+                            Text="Najnowsze"
+                            HorizontalOptions="Center" 
+                            Margin="0,25,0,0"
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="20"
+                            TextColor="White">
                             <Label.FontFamily>
                                 <OnPlatform x:TypeArguments="x:String">
                                     <On Platform="Android" Value="Lobster-Regular.ttf#Lobster-Regular" />
@@ -63,30 +63,76 @@
                 </Grid>
 
 
-                <ListView x:Name="ItemsListView" SeparatorColor="White" VerticalScrollBarVisibility="Always"
-                ItemsSource="{Binding MyShoppingLists}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="True"
-                RefreshCommand="{Binding LoadItemsCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement">
+                <ListView x:Name="ItemsListView" 
+                          SeparatorColor="White" 
+                          VerticalScrollBarVisibility="Always" 
+                          ItemsSource="{Binding MyShoppingLists}"
+                          VerticalOptions="FillAndExpand"
+                          HasUnevenRows="True"
+                          RefreshCommand="{Binding LoadItemsCommand}"
+                          IsPullToRefreshEnabled="False"
+                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                          CachingStrategy="RecycleElement">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Padding="10">
-                                    <Label Text="{Binding Name}"
-                                   TextColor="White"
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16"
-                                HorizontalOptions="Center"/>
-                                    <Label  Text="{Binding BodyHighlight}" 
-                                   TextColor="White"
-
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13"
-                                HorizontalOptions="Center" />
+                                    <!--<Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>-->
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                        <Label 
+                                               Margin="0,0,0,0" 
+                                               Text="{Binding Name}" 
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               LineBreakMode="WordWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="18"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End">
+                                            <Label.FontFamily>
+                                                <OnPlatform x:TypeArguments="x:String">
+                                                    <On Platform="Android" Value="Quicksand-Bold.otf#Quicksand-Bold" />
+                                                </OnPlatform>
+                                            </Label.FontFamily>
+                                        </Label>
+                                        <Label 
+                                               Margin="0,0,0,0" 
+                                               TextColor="White" 
+                                               LineBreakMode="WordWrap" 
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Start"
+                                               FontSize="18"
+                                               Text="{Binding CreationDate, StringFormat='  ({0:dd.MM.yy})'}" >
+                                            <Label.FontFamily>
+                                                <OnPlatform x:TypeArguments="x:String">
+                                                    <On Platform="Android" Value="PragatiNarrow-Regular.ttf#PragatiNarrow-Regular" />
+                                                </OnPlatform>
+                                            </Label.FontFamily>
+                                        </Label>
+                                    </StackLayout>
+                                        
+                                    <!--</Grid>-->
+                                    
+                                    <Label Margin="0,-15,0,5" 
+                                           VerticalTextAlignment="Start" 
+                                           VerticalOptions="Start" 
+                                           Text="{Binding BodyHighlight}" 
+                                           FontSize="Small"
+                                           TextColor="White" 
+                                           FontAttributes="Italic" 
+                                           HorizontalOptions="Center">
+                                        <!--<Label.FontFamily>
+                                            <OnPlatform x:TypeArguments="x:String">
+                                                <On Platform="Android" Value="Quicksand-Italic.otf#Quicksand-Italic" />
+                                            </OnPlatform>
+                                        </Label.FontFamily>-->
+                                    </Label>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
@@ -100,7 +146,7 @@
                                                  HeightRequest="30"
                                                  WidthRequest="30"
                                                  BackgroundColor="Transparent" 
-                                                 BorderColor="Transparent" IsEnabled="True">
+                                                 BorderColor="Transparent" IsEnabled="True" Clicked="DeleteListButton_Clicked">
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
                                                     <VisualState x:Name="Normal">
@@ -219,10 +265,7 @@
                         </VisualStateManager.VisualStateGroups>
                     </ImageButton>
                 </Grid>
-
             </Grid>
-            
-            
         </Grid>
         
     </ContentPage.Content>

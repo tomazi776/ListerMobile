@@ -78,6 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Lobster-Regular.ttf" />
+    <AndroidAsset Include="Assets\Quicksand-Regular.otf" />
+    <AndroidAsset Include="Assets\Quicksand-Italic.otf" />
+    <AndroidAsset Include="Assets\Quicksand-Bold.otf" />
+    <AndroidAsset Include="Assets\Quicksand-Light.otf" />
+    <AndroidAsset Include="Assets\PragatiNarrow-Regular.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidAsset Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

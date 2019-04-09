@@ -17,7 +17,7 @@
                 </OnPlatform>
             </NavigationPage.Icon>
             <x:Arguments>
-                <views:ShoppingListsPage />
+                <views:StartingPage />
             </x:Arguments>
         </NavigationPage>
 
