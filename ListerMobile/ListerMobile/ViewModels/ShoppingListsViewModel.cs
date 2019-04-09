@@ -1,10 +1,8 @@
 ﻿using ListerMobile.Models;
 using ListerMobile.Services;
 using ListerMobile.Views;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,6 +14,11 @@ namespace ListerMobile.ViewModels
     {
         private const string SHOPPING_LISTS_PAGE_TITLE = "Moje Listy";
         public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
+
+        public bool HadBeenInitialized { get; set; }
+        //public ObservableCollection<ShoppingList> ArchivedLists { get; set; } = new ObservableCollection<ShoppingList>();
+        private bool IsListRemoved { get; set; } = false;
+        private ShoppingList ListToBeRemoved { get; set; } = new ShoppingList();
         public Command LoadItemsCommand { get; set; }
 
         private ObservableCollection<ShoppingList> _myShoppingLists;
@@ -26,39 +29,70 @@ namespace ListerMobile.ViewModels
         }
 
 
-
+        /// <summary>
+        /// Initializes Data fetched from server
+        /// </summary>
         public ShoppingListsViewModel()
         {
             Title = SHOPPING_LISTS_PAGE_TITLE;
             MyShoppingLists = new ObservableCollection<ShoppingList>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            //LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            // Adds newly created ShoppingList for display   ++ Add functionality for adding shoppingList to server at the same time
-            MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", (obj, item) =>
+
+
+            // Adds newly created ShoppingList for display 
+            MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
             {
                 var newShoppingList = item as ShoppingList;
+                var shoppingListsServices = new ShoppingListsServices();
+
+                await shoppingListsServices.PostShoppingListAsync(newShoppingList);
                 MyShoppingLists.Add(newShoppingList);
             });
 
-            //InitializeDataAsync();
+            // Deletes selected shoppingList from the View and Server
+            MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "DeleteShoppingList", async (obj, item) =>
+            {
+
+                var shoppingList = item as ShoppingList;
+                var shoppingListsServices = new ShoppingListsServices();
+
+                MyShoppingLists.Remove(shoppingList);
+                await shoppingListsServices.DeleteShoppingListAsync(shoppingList.Id);
+
+            });
+
+            //MessagingCenter.Subscribe<StartingPage, bool>(this, "FetchServerData", async (obj, item) =>
+            //{
+            //    if (item)
+            //    {
+            //        await InitializeDataAsync();
+            //    }
+
+            //});
+
+            InitializeDataAsync();
         }
 
         private async Task InitializeDataAsync()
         {
             var shoppingListsServices = new ShoppingListsServices();
-            MyShoppingLists = await shoppingListsServices.GetShoppingListsAsync();
-            AdjustRecievedInput();
+            var shoppingLists = await shoppingListsServices.GetShoppingListsAsync();
+            AdjustBodyAndHighlightInput();
+            MyShoppingLists = shoppingLists;
         }
 
 
-        private void AdjustRecievedInput()
+        private void AdjustBodyAndHighlightInput()
         {
             foreach (var item in MyShoppingLists)
             {
                 item.Body = item.Body.TrimEnd('\r', '\n', ' ', ',', '.');
                 item.BodyHighlight = MakeHighlightFromBody(item.Body);
-                var listDate = DateTime.Parse(item.CreationDate.ToString()).ToString("dd.MM.yy");
-                item.Name += " " + listDate;
+                if (item.CreationDate == null)
+                {
+                    return;
+                }
             }
         }
 
@@ -90,33 +124,55 @@ namespace ListerMobile.ViewModels
             return words.ToArray();
         }
 
-        async Task ExecuteLoadItemsCommand()
-        {
-            if (IsBusy)
-                return;
+        //async Task ExecuteLoadItemsCommand()
+        //{
+        //    if (IsBusy)
+        //        return;
 
-            IsBusy = true;
+        //    IsBusy = true;
 
-            try
-            {
-                MyShoppingLists.Clear();
-                InitializeDataAsync();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
+        //    try
+        //    {
+        //        await InitializeDataAsync();
+
+        //        if (IsListRemoved)
+        //        {
+        //            //MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "DeleteShoppingList", (obj, item) =>
+        //            //{
+        //            //    ListToBeRemoved = item;
+        //            //    RemoveList(ListToBeRemoved);
+
+        //            //});
+
+        //            //foreach (var item in MovedToArchiveLists)
+        //            //{
+        //            //    var list = MovedToArchiveLists[item.Id];
+        //            //    MyShoppingLists.RemoveAt();
+
+        //            //}
+
+        //            RemoveList(ListToBeRemoved);
+
+
+        //        }
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine(ex);
+        //    }
+        //    finally
+        //    {
+        //        IsBusy = false;
+        //    }
+        //}
 
         //async Task ExecuteDeleteItemCommand()
         //{
         //    try
         //    {
-        //        var items = await DataStore.DeleteItemAsync()
+        //        var items = await DataStore.DeleteItemAsync();
         //    }
         //    catch (Exception)
         //    {

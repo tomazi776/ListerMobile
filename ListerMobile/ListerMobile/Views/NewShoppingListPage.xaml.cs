@@ -13,6 +13,7 @@ namespace ListerMobile.Views
     public partial class NewShoppingListPage : TabbedPage
     {
         public ShoppingList ShoppingList { get; set; }
+        public DateTime CurrentDate { get; set; }
         public List<string> NewListProducts = new List<string>();
         public bool IsNewVoiceListClicked { get; set; }
         private ISpeechToText speechRecongnitionInstance;
@@ -22,14 +23,7 @@ namespace ListerMobile.Views
             InitializeComponent();
             BindingContext = this;
 
-            ShoppingList = new ShoppingList
-            {
-                Id = 1,
-                CreationDate = DateTime.Today,
-                Name = GetTodaysDate(),
-                Body = "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
-                BodyHighlight = "- trzy - przykładowe - produkty"
-            };
+            CreateMockDataForList();
 
             try
             {
@@ -51,6 +45,18 @@ namespace ListerMobile.Views
                 SpeechToTextFinalResultRecieved(args);
             });
 
+        }
+
+        private void CreateMockDataForList()
+        {
+            ShoppingList = new ShoppingList
+            {
+                Id = 1,
+                CreationDate = DateTime.UtcNow,
+                Name = GetTodaysDate(),
+                Body = "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
+                BodyHighlight = "- trzy - przykładowe - produkty"
+            };
         }
 
         private void SpeechToTextFinalResultRecieved(string args)
@@ -83,19 +89,29 @@ namespace ListerMobile.Views
         {
             var culture = new System.Globalization.CultureInfo("pl-PL");
 
-            string date = DateTime.Today.ToString("dd.MM.yy");
-            var day = culture.DateTimeFormat.GetDayName(DateTime.Now.DayOfWeek);
+            string date = DateTime.UtcNow.ToString("dd.MM.yy");
+            var day = culture.DateTimeFormat.GetDayName(DateTime.UtcNow.DayOfWeek);
             var upperDay = char.ToUpper(day[0]) + day.Substring(1);
-            string output = upperDay.ToString() + " " + date;
+            string output = upperDay.ToString();
             return output;
         }
 
         async void Save_Clicked(object sender, EventArgs e)
         {
             AdjustRecievedInput(ShoppingList.Body);
+            //AdjustName();
+
+            // Create method for adding Creation Date to manually created list
             MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
+
             await Navigation.PopModalAsync();
         }
+
+        //private void AdjustName()
+        //{
+        //    var date = DateTime.Today.ToString("dd.MM.yy");
+        //    ShoppingList.Name += " " + date;
+        //}
 
         private void AdjustRecievedInput(string body)
         {

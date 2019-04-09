@@ -1,6 +1,5 @@
 ﻿using ListerMobile.Models;
 using ListerMobile.RestClient;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -13,6 +12,18 @@ namespace ListerMobile.Services
             RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
             var shoppingLists = await restClient.GetAsync();
             return shoppingLists;
+        }
+
+        public async Task DeleteShoppingListAsync(int id)
+        {
+            RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
+            var shoppingLists = await restClient.DeleteAsync(id);
+        }
+
+        public async Task PostShoppingListAsync(ShoppingList shoppingList)
+        {
+            RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
+            var shoppingLists = await restClient.PostAsync(shoppingList);
         }
     }
 }

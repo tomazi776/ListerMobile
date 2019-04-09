@@ -1,5 +1,4 @@
 ﻿using ListerMobile.Models;
-using ListerMobile.Services;
 using ListerMobile.ViewModels;
 using System;
 using Xamarin.Forms;
@@ -10,7 +9,6 @@ namespace ListerMobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShoppingListsPage : ContentPage
     {
-
         ShoppingListsViewModel viewModel;
 
         //private ListView ItemsListView = new ListView();     // NWM czy to siądzie
@@ -23,6 +21,8 @@ namespace ListerMobile.Views
 
             BindingContext = viewModel = new ShoppingListsViewModel();
         }
+
+
 
         //async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         //{
@@ -42,14 +42,14 @@ namespace ListerMobile.Views
             await Navigation.PushModalAsync(new NavigationPage(new NewShoppingListPage()));
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            InitializeBindingContext();
+        //protected override void OnAppearing()
+        //{
+        //    base.OnAppearing();
+        //    InitializeBindingContext();
 
-            if (viewModel.MyShoppingLists.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
-        }
+        //    if (viewModel.MyShoppingLists.Count == 0)
+        //        viewModel.LoadItemsCommand.Execute(null);
+        //}
 
         private void InitializeBindingContext()
         {
@@ -66,6 +66,17 @@ namespace ListerMobile.Views
             var item = btn.BindingContext as ShoppingList;
             if (item == null) return;
             await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
+        }
+
+        private void DeleteListButton_Clicked(object sender, EventArgs e)
+        {
+            ImageButton btn = sender as ImageButton;
+            var item = btn.BindingContext as ShoppingList;
+            if (item == null) return;
+
+            MessagingCenter.Send(this, "DeleteShoppingList", item);
+            //if (viewModel.MyShoppingLists.Count == 0)
+            //    viewModel.LoadItemsCommand.Execute(null);
         }
 
         //private async void HamburgerButton_Clicked(object sender, EventArgs e)
