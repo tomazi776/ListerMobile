@@ -28,11 +28,11 @@ namespace ListerMobile.Views
 
         private void InitializeBindingContext()
         {
-            ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
-            if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
-            {
-                viewModel.LoadItemsCommand.Execute(null);
-            }
+            //ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
+            //if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
+            //{
+            //    viewModel.LoadItemsCommand.Execute(null);
+            //}
         }
     }
 }

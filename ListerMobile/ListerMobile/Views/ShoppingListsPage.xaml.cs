@@ -16,9 +16,6 @@ namespace ListerMobile.Views
         public ShoppingListsPage()
         {
             InitializeComponent();
-
-            //ItemsListView.Effects
-
             BindingContext = viewModel = new ShoppingListsViewModel();
         }
 

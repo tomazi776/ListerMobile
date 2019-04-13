@@ -68,29 +68,29 @@ namespace ListerMobile.RestClient
 
         public async Task<bool> PutAsync(int id, T t)
         {
-            //using (var client = new HttpClient())
-            //{
-            //    try
-            //    {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri(WEB_SERVICE_URI + PORT);
 
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Debug.WriteLine(ex);
-            //        throw;
-            //    }
-            //}
-            var client = new HttpClient();
+                    var json = JsonConvert.SerializeObject(t);
 
-            var json = JsonConvert.SerializeObject(t);
+                    HttpContent httpContent = new StringContent(json);
 
-            HttpContent httpContent = new StringContent(json);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    var result = await client.PutAsync(WEB_SERVICE_PATH + id, httpContent);
 
-            var result = await client.PutAsync(WEB_SERVICE_PATH + id, httpContent);
+                    return result.IsSuccessStatusCode;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    throw;
+                }
+            }
 
-            return result.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteAsync(int id)
