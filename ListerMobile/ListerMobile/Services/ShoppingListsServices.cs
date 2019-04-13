@@ -25,5 +25,11 @@ namespace ListerMobile.Services
             RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
             var shoppingLists = await restClient.PostAsync(shoppingList);
         }
+
+        public async Task PutShoppingListAsync(int id, ShoppingList shoppingList)
+        {
+            RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
+            var shoppingLists = await restClient.PutAsync(id, shoppingList);
+        }
     }
 }

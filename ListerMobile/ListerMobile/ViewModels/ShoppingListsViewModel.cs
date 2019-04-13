@@ -50,6 +50,16 @@ namespace ListerMobile.ViewModels
                 MyShoppingLists.Add(newShoppingList);
             });
 
+
+            MessagingCenter.Subscribe<ShoppingListDetailViewModel, ShoppingList>(this, "UpdateShoppingList", async (obj, item) =>
+            {
+                var newShoppingList = item as ShoppingList;
+                var shoppingListsServices = new ShoppingListsServices();
+
+                await shoppingListsServices.PutShoppingListAsync(newShoppingList.Id, newShoppingList);
+                await InitializeDataAsync();
+            });
+
             // Deletes selected shoppingList from the View and Server
             MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "DeleteShoppingList", async (obj, item) =>
             {

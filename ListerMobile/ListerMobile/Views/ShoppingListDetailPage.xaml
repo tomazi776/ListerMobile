@@ -2,15 +2,29 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ListerMobile.Views.ShoppingListDetailPage"
+             xmlns:viewModels="clr-namespace:ListerMobile.ViewModels"
              Title="{Binding Title}">
-    
+
+    <ContentPage.BindingContext>
+        <viewModels:ShoppingListDetailViewModel/>
+    </ContentPage.BindingContext>
+
     <StackLayout Spacing="20" Padding="15">
         <Label Text="Nazwa Listy:" FontSize="Medium" />
-        <Entry Text="{Binding ShoppingList.Name}" FontSize="Small"/>
+        <Entry x:Name="enterName" Text="{Binding ShoppingList.Name}" FontSize="Small"/>
         <Label Text="Produkty:" FontSize="Medium" />
-        <ScrollView>
-            <Editor Text="{Binding ShoppingList.Body}" FontSize="Small"/>
 
+        <ScrollView Grid.ColumnSpan="2">
+                <Editor x:Name="enterBody" Text="{Binding ShoppingList.Body}" FontSize="Small"/>
         </ScrollView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ImageButton Grid.Column="0"  HorizontalOptions="Center" VerticalOptions="End" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="CancelUpdateList_Clicked"/>
+            <ImageButton Grid.Column="1"  HorizontalOptions="Center" VerticalOptions="End" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="UpdateList_Clicked"/>
+        </Grid>
+
     </StackLayout>
 </ContentPage>
