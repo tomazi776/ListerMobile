@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ListerMobile.Views.LoginPage" BackgroundColor="#88a2aa">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid BackgroundColor="#00aecc">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            </Grid>
+            <Label Grid.Column="1" 
+                   Grid.Row="0" 
+                   Text="Zaloguj się"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" />
+            <Entry Grid.Column="1"
+                   Grid.Row="1"
+                   Placeholder="Login"
+                   PlaceholderColor="White"/>
+            <Entry Grid.Column="1"
+                   Grid.Row="1"
+                   Placeholder="Hasło" 
+                   PlaceholderColor="White" IsPassword="True"/>
+            <Image Source="locker.png" HeightRequest="40" WidthRequest="40"/>
+            <Button Text="ZALOGUJ" CornerRadius="2" BackgroundColor="#63bccc" Clicked="Login_Button_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
