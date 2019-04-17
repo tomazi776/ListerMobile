@@ -10,6 +10,7 @@ namespace ListerMobile.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+        public bool IsLoggedIn { get; set; }
 
         public MainPage()
         {
@@ -18,6 +19,15 @@ namespace ListerMobile.Views
             MasterBehavior = MasterBehavior.Popover;
 
             //MenuPages.Add((int)MenuItemType.About, (NavigationPage)Detail);
+        }
+
+        protected override void OnAppearing()
+        {
+            if (!IsLoggedIn)
+            {
+                Navigation.PushModalAsync(new LoginPage());
+                IsLoggedIn = true;
+            }
         }
 
 

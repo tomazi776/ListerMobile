@@ -1,8 +1,10 @@
-﻿using ListerMobile.Models;
+﻿using ListerMobile.Helpers;
+using ListerMobile.Models;
 using ListerMobile.Services;
 using ListerMobile.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace ListerMobile.ViewModels
     {
         private const string SHOPPING_LISTS_PAGE_TITLE = "Moje Listy";
         public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
+
 
         public bool HadBeenInitialized { get; set; }
         //public ObservableCollection<ShoppingList> ArchivedLists { get; set; } = new ObservableCollection<ShoppingList>();
@@ -28,6 +31,15 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref _myShoppingLists, value); }
         }
 
+        //private User user;
+
+        //public User User
+        //{
+        //    get { return user; }
+        //    set { SetProperty(ref user, value); }
+        //}
+
+
 
         /// <summary>
         /// Initializes Data fetched from server
@@ -38,16 +50,38 @@ namespace ListerMobile.ViewModels
             MyShoppingLists = new ObservableCollection<ShoppingList>();
             //LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
+            //MessagingCenter.Subscribe<LoginPage, string>(this, "AddUser", async (obj, item) =>
+            //{
+            //    User = new User();
+            //    var userName = item as string;
+            //    User.Name = userName;
+            //    var dupaleek = "ssss";
+
+            //});
+            //var dupal = "ssss";
 
 
             // Adds newly created ShoppingList for display 
             MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
             {
-                var newShoppingList = item as ShoppingList;
-                var shoppingListsServices = new ShoppingListsServices();
 
-                await shoppingListsServices.PostShoppingListAsync(newShoppingList);
-                MyShoppingLists.Add(newShoppingList);
+                try
+                {
+                    var newShoppingList = item as ShoppingList;
+                    newShoppingList.User = Globals.USER;
+
+
+                    var shoppingListsServices = new ShoppingListsServices();
+
+                    await shoppingListsServices.PostShoppingListAsync(newShoppingList);
+                    MyShoppingLists.Add(newShoppingList);
+                }
+                catch (System.Exception ex)
+                {
+
+                    Debug.WriteLine(ex);
+                }
+
             });
 
 

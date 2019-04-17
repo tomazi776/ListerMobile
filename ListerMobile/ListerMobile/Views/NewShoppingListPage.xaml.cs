@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,6 +15,7 @@ namespace ListerMobile.Views
     {
         public ShoppingList ShoppingList { get; set; }
         public DateTime CurrentDate { get; set; }
+        //public User User { get; set; }
         public List<string> NewListProducts = new List<string>();
         public bool IsNewVoiceListClicked { get; set; }
         private ISpeechToText speechRecongnitionInstance;
@@ -22,6 +24,9 @@ namespace ListerMobile.Views
         {
             InitializeComponent();
             BindingContext = this;
+
+            //User = new User(Globals.USER.Name);
+            //User = Globals.USER;
 
             CreateMockDataForList();
 
@@ -57,7 +62,18 @@ namespace ListerMobile.Views
                 Body = "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
                 BodyHighlight = "- trzy - przykładowe - produkty"
             };
+
+            //GetLotggedUser();
+
+            var sssss = "ddd";
+
         }
+
+        //private async void GetLotggedUser()
+        //{
+        //    ShoppingList.User.Id = Preferences.Get("d", )
+        //    ShoppingList.User.Name = await SecureStorage.GetAsync("loginToken");
+        //}
 
         private void SpeechToTextFinalResultRecieved(string args)
         {
@@ -101,10 +117,20 @@ namespace ListerMobile.Views
             AdjustRecievedInput(ShoppingList.Body);
             //AdjustName();
 
-            // Create method for adding Creation Date to manually created list
-            MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
+            try
+            {
 
-            await Navigation.PopModalAsync();
+                ShoppingList.User.Name = await SecureStorage.GetAsync("loginToken");
+                var xxx = "dupal";
+                // Create method for adding Creation Date to manually created list
+                MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
+
+                await Navigation.PopModalAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //private void AdjustName()

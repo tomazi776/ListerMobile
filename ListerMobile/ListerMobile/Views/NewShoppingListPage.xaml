@@ -28,14 +28,14 @@
     <ContentPage Title="Zwykła" BackgroundColor="#0f0f0f">
         <StackLayout Spacing="15" Padding="15">
             <Label Text="Nazwa Listy" TextColor="White" FontSize="Small" />
-            <Entry Text="{Binding ShoppingList.Name}" 
+            <Entry x:Name="EntryListName" Text="{Binding ShoppingList.Name}" 
                    TextColor="White" 
                    FontSize="Small" 
                    Placeholder="Dzisiejsza data" 
                    PlaceholderColor="White"
                    BackgroundColor="#171916" />
             <Label Text="Treść" TextColor="White" FontSize="Medium" />
-            <Editor x:Name="BodyEditor"
+            <Editor x:Name="EditorListBody"
                     Text="{Binding ShoppingList.Body}"
                     TextColor="White"
                     BackgroundColor="#171916"
@@ -59,7 +59,7 @@
     <ContentPage Title="Głosowa">
         <StackLayout Spacing="15" Padding="15">
             <Label Text="Nazwa Listy" TextColor="White" FontSize="Small" />
-            <Entry Text="{Binding ShoppingList.Name}" TextColor="White" FontSize="Small" Placeholder="Dzisiejsza data" PlaceholderColor="White"
+            <Entry x:Name="EntryVoiceListName" Text="{Binding ShoppingList.Name}" TextColor="White" FontSize="Small" Placeholder="Dzisiejsza data" PlaceholderColor="White"
                    BackgroundColor="Black" />
             <Grid Padding="0" Margin="0">
                 <Grid.ColumnDefinitions>

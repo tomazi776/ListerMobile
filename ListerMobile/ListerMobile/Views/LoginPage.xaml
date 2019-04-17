@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ListerMobile.Views.LoginPage" BackgroundColor="#88a2aa">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Grid Margin="40, 50, 30, 40"
+                  BackgroundColor="#00aecc" HorizontalOptions="Center" VerticalOptions="Center" >
+                <!--<Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>-->
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            <Label 
+                   Grid.Row="0" 
+                   Text="Zaloguj się" 
+                   FontSize="Large" 
+                   TextColor="White"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" />
+            <Entry x:Name="UserNameEntry" 
+                   
+                   Grid.Row="1"
+                   Placeholder="Login"
+                   PlaceholderColor="White"/>
+            <Entry x:Name="PasswordEntry" 
+                   
+                   Grid.Row="2"
+                   Placeholder="Hasło" 
+                   PlaceholderColor="White" IsPassword="True"/>
+            <Image 
+                   Grid.Row="3"
+                   Source="locker.png" 
+                   HeightRequest="40" 
+                   WidthRequest="40"/>
+            <Switch x:Name="RememberSwitch"
+                    Grid.Row="4"/>
+                <Button 
+                        Grid.Row="5" 
+                        
+                        Text="ZALOGUJ" 
+                        CornerRadius="2" 
+                        BackgroundColor="#63bccc" 
+                        Clicked="LoginButton_Clicked"/>
+            </Grid>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

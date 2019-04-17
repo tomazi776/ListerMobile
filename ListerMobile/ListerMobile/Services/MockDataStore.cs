@@ -16,7 +16,7 @@ namespace ListerMobile.Services
 
         public MockDataStore()
         {
-            User user1 = new User { Id = 1, Name = "Tomala" };
+            //User user1 = new User { Id = 1, Name = "Tomala" };
 
             Product[] FirstListProducts = new Product[]
             {
@@ -56,15 +56,15 @@ namespace ListerMobile.Services
 
 
             shoppingLists = new List<ShoppingList>();
-            var mockItems = new List<ShoppingList>
-            {
-                new ShoppingList { Id =1, CreationDate = DateTime.Today, Name = "Poniedzialek 04.03.19" ,Products = FirstListProducts , Body = string.Join("" + Environment.NewLine, ProductsOfFirstList.ToArray()),  BodyHighlight = TakeElements(ProductsOfFirstList)  , User = user1  },
-                new ShoppingList { Id =2, CreationDate = DateTime.Today, Name = "Wtorek 05.03.19",Products = SecondListProducts, Body = string.Join("" + Environment.NewLine, ProductsOfSecondList.ToArray()) , BodyHighlight = TakeElements(ProductsOfSecondList), User = user1  },
-            };
-            foreach (var item in mockItems)
-            {
-                shoppingLists.Add(item);
-            }
+            //var mockItems = new List<ShoppingList>
+            //{
+            //    new ShoppingList { Id =1, CreationDate = DateTime.Today, Name = "Poniedzialek 04.03.19" ,Products = FirstListProducts , Body = string.Join("" + Environment.NewLine, ProductsOfFirstList.ToArray()),  BodyHighlight = TakeElements(ProductsOfFirstList)  , User = user1  },
+            //    new ShoppingList { Id =2, CreationDate = DateTime.Today, Name = "Wtorek 05.03.19",Products = SecondListProducts, Body = string.Join("" + Environment.NewLine, ProductsOfSecondList.ToArray()) , BodyHighlight = TakeElements(ProductsOfSecondList), User = user1  },
+            //};
+            //foreach (var item in mockItems)
+            //{
+            //    shoppingLists.Add(item);
+            //}
         }
 
 

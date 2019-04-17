@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Speech;
 using Android.Views;
 using ListerMobile.Services;
@@ -27,7 +28,7 @@ namespace ListerMobile.Droid
 
             base.OnCreate(bundle);
 
-
+            Xamarin.Essentials.Platform.Init(this, bundle);
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }
@@ -53,6 +54,13 @@ namespace ListerMobile.Droid
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
