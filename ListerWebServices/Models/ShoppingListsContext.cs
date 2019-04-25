@@ -24,5 +24,6 @@ namespace ListerWebServices.Models
 
 
         public System.Data.Entity.DbSet<ListerMobile.Models.ShoppingList> ShoppingLists { get; set; }
+        public System.Data.Entity.DbSet<ListerMobile.Models.User> Users { get; set; }
     }
 }

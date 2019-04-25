@@ -121,7 +121,8 @@ namespace ListerMobile.ViewModels
         private async Task InitializeDataAsync()
         {
             var shoppingListsServices = new ShoppingListsServices();
-            var shoppingLists = await shoppingListsServices.GetShoppingListsAsync();
+            var shoppingLists = await shoppingListsServices.GetShoppingListsAsync();     //Modify service to get all the ShoppingLists for currently logged User
+
             AdjustBodyAndHighlightInput();
             MyShoppingLists = shoppingLists;
         }

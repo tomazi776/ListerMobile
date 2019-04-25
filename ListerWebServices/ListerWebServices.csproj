@@ -244,6 +244,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\sample1app - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\sample1app - Web Deploy.pubxml" />
     <None Include="Properties\Settings.settings">
