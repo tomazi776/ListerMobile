@@ -1,5 +1,4 @@
-﻿using ListerMobile.Helpers;
-using ListerMobile.Models;
+﻿using ListerMobile.Models;
 using ListerMobile.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -150,37 +149,37 @@ namespace ListerMobile.Views
 
         }
 
-        private async void CheckForExistingUserNameInDB()
-        {
-            var shoppingListsServices = new ShoppingListsServices();
-            var lists = await shoppingListsServices.GetShoppingListsAsync();
+        //private async void CheckForExistingUserNameInDB()
+        //{
+        //    var shoppingListsServices = new ShoppingListsServices();
+        //    var lists = await shoppingListsServices.GetShoppingListsAsync();
 
-            User us = new User(UserName);
-            var list = new ShoppingList();
-            list.User = us;
-            var listUserName = list.User.Name;
+        //    User us = new User(UserName);
+        //    var list = new ShoppingList();
+        //    list.User = us;
+        //    var listUserName = list.User.Name;
 
-            //var IsUserInDB = lists.Contains(list.User.Name.Equals(UserName));
+        //    //var IsUserInDB = lists.Contains(list.User.Name.Equals(UserName));
 
-            //if ()
-            //{
-            //    CreateNewUser(us);
-            //}
+        //    //if ()
+        //    //{
+        //    //    CreateNewUser(us);
+        //    //}
 
 
-            Globals.USER = new User();
+        //    Globals.USER = new User();
 
-            var userName = Preferences.Get(nameof(UserName), string.Empty);
-            if (username.Equals(string.Empty))
-            {
+        //    var userName = Preferences.Get(nameof(UserName), string.Empty);
+        //    if (username.Equals(string.Empty))
+        //    {
 
-            }
-            else
-            {
+        //    }
+        //    else
+        //    {
 
-            }
+        //    }
 
-        }
+        //}
 
         private async void CreateNewUser(User usr)
         {

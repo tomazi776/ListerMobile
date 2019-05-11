@@ -120,7 +120,7 @@ namespace ListerMobile.Views
             try
             {
 
-                ShoppingList.User.Name = await SecureStorage.GetAsync("loginToken");
+                ShoppingList.User = await SecureStorage.GetAsync("loginToken");
                 var xxx = "dupal";
                 // Create method for adding Creation Date to manually created list
                 MessagingCenter.Send(this, "AddShoppingList", ShoppingList);

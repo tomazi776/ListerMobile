@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ListerMobile.Models;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace ListerWebServices.Models
 {
@@ -14,11 +11,11 @@ namespace ListerWebServices.Models
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
+
         public UsersContext() : base("name=UsersContext")
         {
         }
 
-        public System.Data.Entity.DbSet<ListerMobile.Models.User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
