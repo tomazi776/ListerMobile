@@ -3,6 +3,9 @@ using ListerMobile.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -48,6 +51,7 @@ namespace ListerMobile.Views
         {
             InitializeComponent();
             Users = new ObservableCollection<User>();
+            GetUsersAsync();
 
             RememberSwitch.IsToggled = RememberMe;
 
@@ -117,9 +121,11 @@ namespace ListerMobile.Views
                 isValid = false;
             }
 
+            //User usr = new User(UserName, PasswordEntry.Text);
 
 
-            if (isValid)
+
+            if (isValid && CredentialsMatch())
             {
 
                 try
@@ -127,7 +133,6 @@ namespace ListerMobile.Views
                     await SecureStorage.SetAsync("loginToken", UserNameEntry.Text);
                     await SecureStorage.SetAsync("token", PasswordEntry.Text);
                     UserName = UserNameEntry.Text;
-
 
                     //MessagingCenter.Send(this, "AddUser", UserName);
                     var dupal = "ddddd";
@@ -149,43 +154,66 @@ namespace ListerMobile.Views
 
         }
 
-        //private async void CheckForExistingUserNameInDB()
-        //{
-        //    var shoppingListsServices = new ShoppingListsServices();
-        //    var lists = await shoppingListsServices.GetShoppingListsAsync();
-
-        //    User us = new User(UserName);
-        //    var list = new ShoppingList();
-        //    list.User = us;
-        //    var listUserName = list.User.Name;
-
-        //    //var IsUserInDB = lists.Contains(list.User.Name.Equals(UserName));
-
-        //    //if ()
-        //    //{
-        //    //    CreateNewUser(us);
-        //    //}
-
-
-        //    Globals.USER = new User();
-
-        //    var userName = Preferences.Get(nameof(UserName), string.Empty);
-        //    if (username.Equals(string.Empty))
-        //    {
-
-        //    }
-        //    else
-        //    {
-
-        //    }
-
-        //}
-
-        private async void CreateNewUser(User usr)
+        private async void GetUsersAsync()
         {
             var usersServices = new UsersServices();
-            await usersServices.PostUserAsync(usr);
+            Users = await usersServices.GetUsersAsync();
         }
+
+        private bool CredentialsMatch()
+        {
+
+            if (PassPhraseMatches(PasswordEntry.Text) && UsernameMatches(UserNameEntry.Text))
+            {
+                Debug.WriteLine("Credentials CORRECT!");
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine("Credentials do not match");
+                return false;
+            }
+        }
+
+        private bool UsernameMatches(string inputUsername)
+        {
+            var matchingUserName = Users.FirstOrDefault(n => n.Name.Equals(inputUsername));
+
+            if (Users.Contains(matchingUserName))
+            {
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine("Username does not match any in Database");
+                return false;
+            }
+        }
+
+        private bool PassPhraseMatches(string inputPhrase)
+        {
+            var matchingUserPassPhrase = Users.FirstOrDefault(n => n.PassPhrase.Equals(inputPhrase));
+            if (Users.Contains(matchingUserPassPhrase))
+            {
+                return true;
+
+            }
+            else
+            {
+                Debug.WriteLine("Passphrase does not match any in Database");
+                return false;
+            }
+
+        }
+
+
+
+        private async void RegisterNewUser(User user)
+        {
+            var usersServices = new UsersServices();
+            await usersServices.PostUserAsync(user);
+        }
+
 
         protected override async void OnAppearing()
         {
@@ -211,5 +239,26 @@ namespace ListerMobile.Views
             Debug.WriteLine(e.NetworkAccess);
         }
 
+        private void RegisterButton_Clicked(object sender, EventArgs e)
+        {
+            var newUser = new User(UserName, PasswordEntry.Text);
+            RegisterNewUser(newUser);
+        }
+
+
+        public static string GetHashString(string inputString)          // Do porównywania hashowanego hasła
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in GetHash(inputString))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
+        }
+
+        public static byte[] GetHash(string inputString)
+        {
+            HashAlgorithm algorithm = SHA256.Create();
+            return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
     }
 }

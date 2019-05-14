@@ -18,6 +18,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
             <Label 
                    Grid.Row="0" 
@@ -41,15 +42,20 @@
                    Source="locker.png" 
                    HeightRequest="40" 
                    WidthRequest="40"/>
-            <Switch x:Name="RememberSwitch"
+            <Switch x:Name="RememberSwitch" IsToggled="False"
                     Grid.Row="4"/>
                 <Button 
                         Grid.Row="5" 
-                        
                         Text="ZALOGUJ" 
                         CornerRadius="2" 
                         BackgroundColor="#63bccc" 
                         Clicked="LoginButton_Clicked"/>
+                <Button
+                    Grid.Row="6"
+                        Text="REJESTRACJA" 
+                        CornerRadius="2" 
+                        BackgroundColor="#63bccc"
+                        Clicked="RegisterButton_Clicked"/>
             </Grid>
 
         </StackLayout>

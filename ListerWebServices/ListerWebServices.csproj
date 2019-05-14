@@ -38,8 +38,8 @@
       <Objects>
         <ObjectGroup Name="ShoppingListsContext-Deployment" Order="1" Enabled="True">
           <Destination Path="Server=tcp:apka1trialserver.database.windows.net,1433%3bInitial Catalog=apka1trialDatabase%3bPersist Security Info=False%3bUser ID={tomasz}%3bPassword={Junior77}%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=False%3bConnection Timeout=30%3b" />
-          <Object Type="DbFullSql" Enabled="False">
-            <PreSource Path="Data Source=%28localdb%29\MSSQLLocalDB%3bAttachDbFilename=|DataDirectory|\ShoppingListsContext-20190325185926.mdf%3bInitial Catalog=ShoppingListsContext-20190325185926%3bIntegrated Security=True%3bMultipleActiveResultSets=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+          <Object Type="DbFullSql" Enabled="True">
+            <PreSource Path="Data Source=%28localdb%29\MSSQLLocalDB%3b Initial Catalog=ShoppingListsContext-20190325185926%3b Integrated Security=SSPI%3b MultipleActiveResultSets=True%3b AttachDbFilename=|DataDirectory|ShoppingListsContext-20190325185926.mdf" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Debug\AutoScripts\ShoppingListsContext-Deployment_SchemaAndData.sql" Transacted="True" />
           </Object>
         </ObjectGroup>
@@ -201,12 +201,15 @@
     <Compile Include="Migrations\201904051728290_First_Migration.Designer.cs">
       <DependentUpon>201904051728290_First_Migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905141847404_Add_PassPhraseToUserModel.cs" />
+    <Compile Include="Migrations\201905141847404_Add_PassPhraseToUserModel.Designer.cs">
+      <DependentUpon>201905141847404_Add_PassPhraseToUserModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ShoppingList.cs" />
     <Compile Include="Models\ShoppingListsContext.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UsersContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -312,6 +315,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201904051728290_First_Migration.resx">
       <DependentUpon>201904051728290_First_Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905141847404_Add_PassPhraseToUserModel.resx">
+      <DependentUpon>201905141847404_Add_PassPhraseToUserModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
