@@ -1,4 +1,5 @@
-﻿using ListerMobile.Models;
+﻿using ListerMobile.Helpers;
+using ListerMobile.Models;
 using ListerMobile.Services;
 using System;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,13 +21,9 @@ namespace ListerMobile.Views
     public partial class LoginPage : ContentPage
     {
         public ObservableCollection<User> Users { get; set; }
-        //private User user;
 
-        //public User User
-        //{
-        //    get { return user; }
-        //    set { user = value; }
-        //}
+        private User FoundUser { get; set; }
+
 
 
         static int userId = Preferences.Get(nameof(UserId), 1);
@@ -53,8 +51,8 @@ namespace ListerMobile.Views
             Users = new ObservableCollection<User>();
             GetUsersAsync();
 
-            RememberSwitch.IsToggled = RememberMe;
 
+            RememberMe = RememberSwitch.IsToggled;
             //GetUserDataFromStorage();
 
         }
@@ -111,13 +109,13 @@ namespace ListerMobile.Views
 
             if (string.IsNullOrEmpty(UserNameEntry.Text) || UserNameEntry.Text.Length < 5)
             {
-                VisualStateManager.GoToState(UserNameEntry, "Nieprawidłowe");
+                //VisualStateManager.GoToState(UserNameEntry, "Nieprawidłowe");
                 isValid = false;
             }
 
             if (string.IsNullOrEmpty(PasswordEntry.Text) || PasswordEntry.Text.Length < 5)
             {
-                VisualStateManager.GoToState(PasswordEntry, "Nieprawidłowe");
+                //VisualStateManager.GoToState(PasswordEntry, "Nieprawidłowe");
                 isValid = false;
             }
 
@@ -127,12 +125,12 @@ namespace ListerMobile.Views
 
             if (isValid && CredentialsMatch())
             {
-
                 try
                 {
                     await SecureStorage.SetAsync("loginToken", UserNameEntry.Text);
                     await SecureStorage.SetAsync("token", PasswordEntry.Text);
                     UserName = UserNameEntry.Text;
+                    MyStorage.GetMyStorageInstance.UserName = UserName;
 
                     //MessagingCenter.Send(this, "AddUser", UserName);
                     var dupal = "ddddd";
@@ -142,7 +140,7 @@ namespace ListerMobile.Views
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
+                    Debug.WriteLine("TU MASZ BŁĄD TUMOKU:" + ex);
                 }
 
 
@@ -151,6 +149,7 @@ namespace ListerMobile.Views
                 //await Navigation.PushAsync(new MainPage());
             }
 
+            await DisplayAlert("Login lub hasło nieprawidłowe!", "", "Spróbuj jeszcze raz");
 
         }
 
@@ -158,12 +157,15 @@ namespace ListerMobile.Views
         {
             var usersServices = new UsersServices();
             Users = await usersServices.GetUsersAsync();
+            var dupal = "ssss";
         }
 
         private bool CredentialsMatch()
         {
+            var userExists = CheckForUser(UserNameEntry.Text);
+            var passPhraseMatch = ComparePassPhrase(PasswordEntry.Text);
 
-            if (PassPhraseMatches(PasswordEntry.Text) && UsernameMatches(UserNameEntry.Text))
+            if (userExists && passPhraseMatch)
             {
                 Debug.WriteLine("Credentials CORRECT!");
                 return true;
@@ -175,40 +177,13 @@ namespace ListerMobile.Views
             }
         }
 
-        private bool UsernameMatches(string inputUsername)
-        {
-            var matchingUserName = Users.FirstOrDefault(n => n.Name.Equals(inputUsername));
-
-            if (Users.Contains(matchingUserName))
-            {
-                return true;
-            }
-            else
-            {
-                Debug.WriteLine("Username does not match any in Database");
-                return false;
-            }
-        }
-
-        private bool PassPhraseMatches(string inputPhrase)
-        {
-            var matchingUserPassPhrase = Users.FirstOrDefault(n => n.PassPhrase.Equals(inputPhrase));
-            if (Users.Contains(matchingUserPassPhrase))
-            {
-                return true;
-
-            }
-            else
-            {
-                Debug.WriteLine("Passphrase does not match any in Database");
-                return false;
-            }
-
-        }
 
 
 
-        private async void RegisterNewUser(User user)
+
+
+
+        private async void RegisterUser(User user)
         {
             var usersServices = new UsersServices();
             await usersServices.PostUserAsync(user);
@@ -239,14 +214,18 @@ namespace ListerMobile.Views
             Debug.WriteLine(e.NetworkAccess);
         }
 
-        private void RegisterButton_Clicked(object sender, EventArgs e)
+        private void ShowRegistrationFormButton_Clicked(object sender, EventArgs e)
         {
-            var newUser = new User(UserName, PasswordEntry.Text);
-            RegisterNewUser(newUser);
+            GridLogin.IsVisible = false;
+            GridLogin.IsEnabled = false;
+
+            GridRegistration.IsVisible = true;
+            GridRegistration.IsEnabled = true;
+
         }
 
 
-        public static string GetHashString(string inputString)          // Do porównywania hashowanego hasła
+        public static string GetHashString(string inputString)
         {
             StringBuilder sb = new StringBuilder();
             foreach (byte b in GetHash(inputString))
@@ -259,6 +238,106 @@ namespace ListerMobile.Views
         {
             HashAlgorithm algorithm = SHA256.Create();
             return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+        }
+
+        private async void RegisterButton_Clicked(object sender, EventArgs e)
+        {
+
+
+            var inputValid = await ValidateInput();
+
+
+            var hashedPassPhrase = GetHashString(PasswordRegistrationEntry.Text);
+            var newUser = new User(UserNameRegistrationEntry.Text, hashedPassPhrase);
+            var userExists = CheckForUser(UserNameRegistrationEntry.Text);
+            var ddd = "ddd";
+            if (!userExists && inputValid)
+            {
+                RegisterUser(newUser);
+                GetUsersAsync();
+                await DisplayAlert("Rejestracja udana!", "", "OK");
+                GoBackToLogin();
+
+            }
+            else if (inputValid && userExists)
+            {
+                await DisplayAlert("Użytkownik o takiej nazwie już istnieje, podaj inną", "", "Ok");
+            }
+        }
+
+        private async Task<bool> ValidateInput()
+        {
+            if (string.IsNullOrEmpty(UserNameRegistrationEntry.Text) || UserNameRegistrationEntry.Text.Length < 5)
+            {
+                await DisplayAlert("Nazwa nie moze być pusta, ani krótsza niż 5 znaków", "", "Ok");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(PasswordRegistrationEntry.Text) || PasswordRegistrationEntry.Text.Length < 5)
+            {
+                await DisplayAlert("Hasło nie moze być puste, ani krótsze niż 5 znaków", "", "Ok");
+                return false;
+            }
+
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool CheckForUser(string userName)
+        {
+            var matchingUser = Users.FirstOrDefault(u => u.Name.Equals(userName));
+
+            if (Users.Contains(matchingUser))
+            {
+                FoundUser = matchingUser;
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine("UserName does not match any in Database");
+                return false;
+            }
+
+        }
+
+        private bool ComparePassPhrase(string inputPhrase)
+        {
+            var hashedPassPhrase = GetHashString(inputPhrase);
+            var ddd = "dupalek";
+            //var matchingUserPassPhrase = Users.FirstOrDefault(n => n.PassPhrase.Equals(hashedPasPhrase));
+
+            var match = FoundUser.PassPhrase.Equals(hashedPassPhrase);
+
+            if (match)
+            {
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine("Passphrase does not match any in Database");
+                return false;
+            }
+        }
+
+        private void BackToLogin_Clicked(object sender, EventArgs e)
+        {
+            GoBackToLogin();
+        }
+
+        private void GoBackToLogin()
+        {
+            GridRegistration.IsVisible = false;
+            GridRegistration.IsEnabled = false;
+
+            GridLogin.IsVisible = true;
+            GridLogin.IsEnabled = true;
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return true;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using ListerMobile.ViewModels;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,19 +19,11 @@ namespace ListerMobile.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            InitializeBindingContext();
-
-            if (viewModel.MyShoppingLists.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
         }
 
-        private void InitializeBindingContext()
+        private void GetShoppingListsForCurrentUser()
         {
-            //ShoppingListsViewModel viewModel = (BindingContext as ShoppingListsViewModel);
-            //if (viewModel != null && viewModel.MyShoppingLists.Count == 0)
-            //{
-            //    viewModel.LoadItemsCommand.Execute(null);
-            //}
+            //var shoppinglistsService = new Shoppi
         }
     }
 }

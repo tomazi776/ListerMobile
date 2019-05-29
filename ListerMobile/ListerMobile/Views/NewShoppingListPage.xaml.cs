@@ -1,10 +1,10 @@
 ﻿using ListerMobile.Models;
 using ListerMobile.Services;
+using ListerMobile.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,6 +13,8 @@ namespace ListerMobile.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewShoppingListPage : TabbedPage
     {
+        NewShoppingListViewModel viewModel;
+
         public ShoppingList ShoppingList { get; set; }
         public DateTime CurrentDate { get; set; }
         //public User User { get; set; }
@@ -23,7 +25,11 @@ namespace ListerMobile.Views
         public NewShoppingListPage()
         {
             InitializeComponent();
-            BindingContext = this;
+            BindingContext = viewModel = new NewShoppingListViewModel(Navigation);
+
+
+
+
 
             //User = new User(Globals.USER.Name);
             //User = Globals.USER;
@@ -54,18 +60,21 @@ namespace ListerMobile.Views
 
         private void CreateMockDataForList()
         {
-            ShoppingList = new ShoppingList
-            {
-                Id = 1,
-                CreationDate = DateTime.UtcNow,
-                Name = GetTodaysDate(),
-                Body = "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
-                BodyHighlight = "- trzy - przykładowe - produkty"
-            };
+            ShoppingList = new ShoppingList(1,
+                GetTodaysDate(),
+                DateTime.UtcNow,
+                "- trzy - przykładowe - produkty",
+                "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
+                "TABALUGA");
+            var zzz = "ssssssssssss";
+
+            //Id = 1,
+            //    CreationDate = DateTime.UtcNow,
+            //    Name = GetTodaysDate(),
+            //    Body = "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
+            //    BodyHighlight = "- trzy - przykładowe - produkty"
 
             //GetLotggedUser();
-
-            var sssss = "ddd";
 
         }
 
@@ -119,9 +128,12 @@ namespace ListerMobile.Views
 
             try
             {
+                //ShoppingList.User = await SecureStorage.GetAsync("loginToken");
+                //ShoppingList.User = Globals.USER;
+                //var xxx = "dupal";
+                //MessagingCenter.Send(this, "ShoppingListUserName", MyStorage.USER);
+                //var sss = "dupal";
 
-                ShoppingList.User = await SecureStorage.GetAsync("loginToken");
-                var xxx = "dupal";
                 // Create method for adding Creation Date to manually created list
                 MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
 

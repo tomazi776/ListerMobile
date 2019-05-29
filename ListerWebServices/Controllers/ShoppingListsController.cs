@@ -19,6 +19,13 @@ namespace ListerWebServices.Controllers
             return db.ShoppingLists;
         }
 
+        // GET: api/ShoppingLists/tomek
+
+        public IQueryable<ShoppingList> GetUserShoppingLists(string userName)
+        {
+            return db.ShoppingLists.Where(n => n.User.Equals(userName));
+        }
+
         // GET: api/ShoppingLists/5
         [ResponseType(typeof(ShoppingList))]
         public IHttpActionResult GetShoppingList(int id)

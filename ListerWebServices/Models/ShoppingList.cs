@@ -10,7 +10,7 @@ namespace ListerMobile.Models
         public DateTime? CreationDate { get; set; } = null;
         public string BodyHighlight { get; set; }
         public string Body { get; set; }
-        public User User { get; set; }
+        public string User { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
 }

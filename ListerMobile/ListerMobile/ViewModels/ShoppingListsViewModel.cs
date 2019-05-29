@@ -1,5 +1,4 @@
-﻿using ListerMobile.Helpers;
-using ListerMobile.Models;
+﻿using ListerMobile.Models;
 using ListerMobile.Services;
 using ListerMobile.Views;
 using System.Collections.ObjectModel;
@@ -21,7 +20,7 @@ namespace ListerMobile.ViewModels
         public bool HadBeenInitialized { get; set; }
         //public ObservableCollection<ShoppingList> ArchivedLists { get; set; } = new ObservableCollection<ShoppingList>();
         private bool IsListRemoved { get; set; } = false;
-        private ShoppingList ListToBeRemoved { get; set; } = new ShoppingList();
+        //private ShoppingList ListToBeRemoved { get; set; } = new ShoppingList();
         public Command LoadItemsCommand { get; set; }
 
         private ObservableCollection<ShoppingList> _myShoppingLists;
@@ -68,7 +67,8 @@ namespace ListerMobile.ViewModels
                 try
                 {
                     var newShoppingList = item as ShoppingList;
-                    newShoppingList.User = Globals.USER;
+                    //newShoppingList.User = Globals.USER;
+                    var d = "ddddd";
 
 
                     var shoppingListsServices = new ShoppingListsServices();
@@ -122,6 +122,8 @@ namespace ListerMobile.ViewModels
         {
             var shoppingListsServices = new ShoppingListsServices();
             var shoppingLists = await shoppingListsServices.GetShoppingListsAsync();     //Modify service to get all the ShoppingLists for currently logged User
+
+
 
             AdjustBodyAndHighlightInput();
             MyShoppingLists = shoppingLists;

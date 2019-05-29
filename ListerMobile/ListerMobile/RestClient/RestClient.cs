@@ -31,7 +31,7 @@ namespace ListerMobile.RestClient
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine("TU MASZ BŁĄD TUMOKU:" + ex.Message);
             }
             return null;
         }
