@@ -7,6 +7,8 @@ namespace ListerMobile.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
+        public ICommand OpenWebCommand { get; }
+
         public AboutViewModel()
         {
             Title = "About";
@@ -14,6 +16,5 @@ namespace ListerMobile.ViewModels
             OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
         }
 
-        public ICommand OpenWebCommand { get; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using ListerMobile.Models;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -11,14 +10,26 @@ namespace ListerMobile.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+        public bool IsLoggedIn { get; set; }
+
         public MainPage()
         {
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            //MenuPages.Add((int)MenuItemType.About, (NavigationPage)Detail);
         }
+
+        protected override void OnAppearing()
+        {
+            if (!IsLoggedIn)
+            {
+                Navigation.PushModalAsync(new LoginPage());
+                IsLoggedIn = true;
+            }
+        }
+
 
         public async Task NavigateFromMenu(int id)
         {
@@ -26,11 +37,17 @@ namespace ListerMobile.Views
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.Browse:
-                        MenuPages.Add(id, new NavigationPage(new ItemsPage()));
+                    case (int)MenuItemType.Moje_Listy:
+                        MenuPages.Add(id, new NavigationPage(new ShoppingListsPage()));
                         break;
-                    case (int)MenuItemType.About:
+                    case (int)MenuItemType.Ulubione:
+                        MenuPages.Add(id, new NavigationPage(new FavouriteProductsPage()));
+                        break;
+                    case (int)MenuItemType.O_Aplikacji:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
+                        break;
+                    case (int)MenuItemType.Odebrane:
+                        MenuPages.Add(id, new NavigationPage(new ReceivedPage()));
                         break;
                 }
             }
@@ -47,5 +64,31 @@ namespace ListerMobile.Views
                 IsPresented = false;
             }
         }
+
+        //async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        //{
+        //    var item = args.SelectedItem as ShoppingList;
+        //    if (item == null)
+        //        return;
+
+        //    await Navigation.PushAsync(new ShoppingListDetailPage(new ShoppingListDetailViewModel(item)));
+
+        //    // Manually deselect item.
+        //    ItemsListView.SelectedItem = null;
+        //}
+
+        //async void AddItem_Clicked(object sender, EventArgs e)
+        //{
+        //    await Navigation.PushModalAsync(new NavigationPage(new NewShoppingListPage()));
+        //}
+
+        //protected override void OnAppearing()
+        //{
+        //    base.OnAppearing();
+
+        //    if (viewModel.ShoppingLists.Count == 0)
+        //        viewModel.LoadItemsCommand.Execute(null);
+        //}
+
     }
 }

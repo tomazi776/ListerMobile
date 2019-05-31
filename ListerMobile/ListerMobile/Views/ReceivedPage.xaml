@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ListerMobile.ViewModels"
+             x:Class="ListerMobile.Views.ReceivedPage"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <viewModels:ShoppingListsViewModel/>
+    </ContentPage.BindingContext>
+
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="add.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>-->
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label
+                Text="Najnowsze"
+                HorizontalOptions="Center" Margin="0,40,0,15"
+                LineBreakMode="NoWrap" 
+                Style="{DynamicResource ListItemTextStyle}" 
+                FontSize="20">
+                <Label.FontFamily>
+                    <OnPlatform x:TypeArguments="x:String">
+                        <On Platform="Android" Value="Lobster-Regular.ttf#Lobster-Regular" />
+                    </OnPlatform>
+                </Label.FontFamily>
+            </Label>
+            <ListView x:Name="ItemsListView" SeparatorColor="Black"
+                ItemsSource="{Binding ReceivedShoppingLists}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="True"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Name}" 
+                                LineBreakMode="NoWrap" 
+                                Style="{DynamicResource ListItemTextStyle}" 
+                                FontSize="16"
+                                HorizontalOptions="Center"/>
+                                <Label  Text="{Binding BodyHighlight}" 
+                                Style="{DynamicResource ListItemDetailTextStyle}"
+                                FontSize="13"
+                                HorizontalOptions="Center" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <ImageButton Grid.Column="0"
+                                                 VerticalOptions="Center" 
+                                                 HorizontalOptions="Center"
+                                                 Source="delete.png"
+                                                 HeightRequest="30"
+                                                 WidthRequest="30"
+                                                 BackgroundColor="Transparent" 
+                                                 BorderColor="Transparent">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale"
+                                                                Value="1" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Pressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale"
+                                                                Value="0.8" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </ImageButton>
+                                    <ImageButton 
+                                        Grid.Column="1" 
+                                        VerticalOptions="Center" 
+                                        HorizontalOptions="Center"
+                                        Source="look.png"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
+                                        BackgroundColor="Transparent" 
+                                        BorderColor="Transparent"  >
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale"
+                                                                Value="1" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Pressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale"
+                                                                Value="0.8" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </ImageButton>
+                                    <ImageButton 
+                                        Grid.Column="2" 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Source="send.png"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
+                                        BackgroundColor="Transparent" 
+                                        BorderColor="Transparent"  >
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale"
+                                                                Value="1" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState x:Name="Pressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Scale"
+                                                                Value="0.8" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </ImageButton>
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

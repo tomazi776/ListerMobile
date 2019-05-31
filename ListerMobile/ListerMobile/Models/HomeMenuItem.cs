@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ListerMobile.Models
+﻿namespace ListerMobile.Models
 {
     public enum MenuItemType
     {
-        Browse,
-        About
+        Ulubione,
+        Moje_Listy,
+        Odebrane,
+        O_Aplikacji
     }
     public class HomeMenuItem
     {

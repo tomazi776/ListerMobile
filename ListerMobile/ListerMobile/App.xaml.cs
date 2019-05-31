@@ -1,7 +1,6 @@
-﻿using System;
+﻿using ListerMobile.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ListerMobile.Views;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace ListerMobile

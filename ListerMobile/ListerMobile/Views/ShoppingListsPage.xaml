@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ListerMobile.ViewModels"
+             x:Class="ListerMobile.Views.ShoppingListsPage"
+             BackgroundColor="Black"
+             Title="{Binding Title}" NavigationPage.HasNavigationBar="True">
+    
+    <ContentPage.BindingContext>
+        <viewModels:ShoppingListsViewModel/>
+    </ContentPage.BindingContext>
+    
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
+            <ToolbarItem.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="UWP" Value="add.png"/>
+                </OnPlatform>
+            </ToolbarItem.Icon>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>-->
+
+    <ContentPage.Content>
+        <Grid BackgroundColor="#0f0f0f" RowSpacing="1">
+            <Grid.RowDefinitions>
+                <!--<RowDefinition Height="80"/>-->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <!--<StackLayout VerticalOptions="Start" 
+                         HorizontalOptions="FillAndExpand" 
+                         Orientation="Horizontal"          
+                         Padding="10,5,10,5">
+                <ImageButton HorizontalOptions="StartAndExpand" Source="hamburger_biel.png" Clicked="HamburgerButton_Clicked"/>
+                <Label HorizontalOptions="CenterAndExpand" Text="Wszystkoczegodzischcesz"/>
+                <ImageButton HorizontalOptions="EndAndExpand" Source="settings_biel.png" Clicked="SettingsButton_Clicked"/>
+            </StackLayout>-->
+            
+            <StackLayout Grid.Row="0" Spacing="1">
+                <Grid Grid.Row="1" BackgroundColor="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <Grid x:Name="FirstInner" Grid.Row="0" BackgroundColor="#1f2323" ColumnSpacing="3" RowSpacing="3" Margin="0,1,0,1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label
+                            Text="Najnowsze"
+                            HorizontalOptions="Center" 
+                            Margin="0,25,0,0"
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="20"
+                            TextColor="White">
+                            <Label.FontFamily>
+                                <OnPlatform x:TypeArguments="x:String">
+                                    <On Platform="Android" Value="Lobster-Regular.ttf#Lobster-Regular" />
+                                </OnPlatform>
+                            </Label.FontFamily>
+                        </Label>
+                    </Grid>
+                </Grid>
+
+
+                <ListView x:Name="ItemsListView" 
+                          SeparatorColor="White" 
+                          VerticalScrollBarVisibility="Always" 
+                          ItemsSource="{Binding MyShoppingLists}"
+                          VerticalOptions="FillAndExpand"
+                          HasUnevenRows="True"
+                          RefreshCommand="{Binding LoadItemsCommand}"
+                          IsPullToRefreshEnabled="False"
+                          IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                          CachingStrategy="RecycleElement">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Padding="10">
+                                    <!--<Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>-->
+                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                        <Label 
+                                               Margin="0,0,0,0" 
+                                               Text="{Binding Name}" 
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               LineBreakMode="WordWrap" 
+                                               Style="{DynamicResource ListItemTextStyle}" 
+                                               FontSize="18"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End">
+                                            <Label.FontFamily>
+                                                <OnPlatform x:TypeArguments="x:String">
+                                                    <On Platform="Android" Value="Quicksand-Bold.otf#Quicksand-Bold" />
+                                                </OnPlatform>
+                                            </Label.FontFamily>
+                                        </Label>
+                                        <Label 
+                                               Margin="0,0,0,0" 
+                                               TextColor="White" 
+                                               LineBreakMode="WordWrap" 
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="Start"
+                                               FontSize="18"
+                                               Text="{Binding CreationDate, StringFormat='  ({0:dd.MM.yy})'}" >
+                                            <Label.FontFamily>
+                                                <OnPlatform x:TypeArguments="x:String">
+                                                    <On Platform="Android" Value="PragatiNarrow-Regular.ttf#PragatiNarrow-Regular" />
+                                                </OnPlatform>
+                                            </Label.FontFamily>
+                                        </Label>
+                                    </StackLayout>
+                                        
+                                    <!--</Grid>-->
+                                    
+                                    <Label Margin="0,-15,0,5" 
+                                           VerticalTextAlignment="Start" 
+                                           VerticalOptions="Start" 
+                                           Text="{Binding BodyHighlight}" 
+                                           FontSize="Small"
+                                           TextColor="White" 
+                                           FontAttributes="Italic" 
+                                           HorizontalOptions="Center">
+                                        <!--<Label.FontFamily>
+                                            <OnPlatform x:TypeArguments="x:String">
+                                                <On Platform="Android" Value="Quicksand-Italic.otf#Quicksand-Italic" />
+                                            </OnPlatform>
+                                        </Label.FontFamily>-->
+                                    </Label>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <ImageButton Grid.Column="0"
+                                                 VerticalOptions="Center" 
+                                                 HorizontalOptions="Center"
+                                                 Source="delete_biel.png"
+                                                 HeightRequest="30"
+                                                 WidthRequest="30"
+                                                 BackgroundColor="Transparent" 
+                                                 BorderColor="Transparent" IsEnabled="True" Clicked="DeleteListButton_Clicked">
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="Normal">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale"
+                                                                Value="1" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+
+                                                    <VisualState x:Name="Pressed">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale"
+                                                                Value="0.8" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </ImageButton>
+                                        <ImageButton 
+                                        Grid.Column="1" 
+                                        VerticalOptions="Center" 
+                                        HorizontalOptions="Center"
+                                        Source="look_biel.png"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
+                                        BackgroundColor="Transparent" 
+                                        BorderColor="Transparent" 
+                                        Clicked="EditListButton_Clicked" >
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="Normal">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale"
+                                                                Value="1" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+
+                                                    <VisualState x:Name="Pressed">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale"
+                                                                Value="0.8" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </ImageButton>
+                                        <ImageButton 
+                                        Grid.Column="2" 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Source="send_biel.png"
+                                        HeightRequest="30"
+                                        WidthRequest="30"
+                                        BackgroundColor="Transparent" 
+                                        BorderColor="Transparent" >
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="Normal">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale"
+                                                                Value="1" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+
+                                                    <VisualState x:Name="Pressed">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="Scale"
+                                                                Value="0.8" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </ImageButton>
+                                    </Grid>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+            <Grid Grid.Row="1" BackgroundColor="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid x:Name="MostInner" Grid.Row="0" BackgroundColor="#1f2323" ColumnSpacing="3" RowSpacing="3" Margin="0,1,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <ImageButton Grid.Row="0" 
+              VerticalOptions="Center"
+              HorizontalOptions="Center"
+              Source="dodaj_biel.png"
+              HeightRequest="45"
+              WidthRequest="45"
+              BackgroundColor="Transparent" 
+              BorderColor="Transparent" 
+              Clicked="AddItem_Clicked">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale"
+                                        Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale"
+                                        Value="0.8" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ImageButton>
+                </Grid>
+            </Grid>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

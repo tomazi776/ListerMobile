@@ -1,5 +1,4 @@
 ﻿using ListerMobile.Models;
-using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -18,13 +17,15 @@ namespace ListerMobile.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.Ulubione, Title = MenuItemType.Ulubione.ToString() },
+                new HomeMenuItem {Id = MenuItemType.Moje_Listy, Title=MenuItemType.Moje_Listy.ToString().Replace('_', ' ' )},
+                new HomeMenuItem {Id = MenuItemType.Odebrane, Title = MenuItemType.Odebrane.ToString() },
+                new HomeMenuItem {Id = MenuItemType.O_Aplikacji, Title=MenuItemType.O_Aplikacji.ToString().Replace('_', ' ' ) }
             };
 
             ListViewMenu.ItemsSource = menuItems;
 
-            ListViewMenu.SelectedItem = menuItems[0];
+            //ListViewMenu.SelectedItem = menuItems[0];
             ListViewMenu.ItemSelected += async (sender, e) =>
             {
                 if (e.SelectedItem == null)
