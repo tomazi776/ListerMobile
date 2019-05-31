@@ -13,9 +13,18 @@ namespace ListerMobile.Models
         public string User { get; set; }
         public virtual ICollection<Product> Products { get; set; }
 
-        public ShoppingList(int id, string name, DateTime creationDate, string bodyHighlight, string body, string user)
+        public ShoppingList()
         {
 
+        }
+        public ShoppingList(int id, string name, DateTime creationDate, string bodyHighlight, string body, string user)
+        {
+            Id = id;
+            Name = name;
+            CreationDate = creationDate;
+            BodyHighlight = bodyHighlight;
+            Body = body;
+            User = user;
         }
 
         //public ShoppingListStatus Status { get; set; } = ShoppingListStatus.Draft;

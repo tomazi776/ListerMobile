@@ -50,21 +50,10 @@ namespace ListerMobile.Views
             InitializeComponent();
             Users = new ObservableCollection<User>();
             GetUsersAsync();
-
-
             RememberMe = RememberSwitch.IsToggled;
-            //GetUserDataFromStorage();
-
         }
 
-        //private void GetUserDataFromStorage()
-        //{
-        //    // if there's not any user already             User = new User();
 
-        //    //if there's an existing user
-        //    Preferences.Get(nameof())
-
-        //}
 
         bool rememberMe = false;
         public bool RememberMe
@@ -109,18 +98,13 @@ namespace ListerMobile.Views
 
             if (string.IsNullOrEmpty(UserNameEntry.Text) || UserNameEntry.Text.Length < 5)
             {
-                //VisualStateManager.GoToState(UserNameEntry, "Nieprawidłowe");
                 isValid = false;
             }
 
             if (string.IsNullOrEmpty(PasswordEntry.Text) || PasswordEntry.Text.Length < 5)
             {
-                //VisualStateManager.GoToState(PasswordEntry, "Nieprawidłowe");
                 isValid = false;
             }
-
-            //User usr = new User(UserName, PasswordEntry.Text);
-
 
 
             if (isValid && CredentialsMatch())
@@ -131,33 +115,25 @@ namespace ListerMobile.Views
                     await SecureStorage.SetAsync("token", PasswordEntry.Text);
                     UserName = UserNameEntry.Text;
                     MyStorage.GetMyStorageInstance.UserName = UserName;
-
-                    //MessagingCenter.Send(this, "AddUser", UserName);
-                    var dupal = "ddddd";
-
                     await Navigation.PopModalAsync();
 
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("TU MASZ BŁĄD TUMOKU:" + ex);
+                    Debug.WriteLine("TU MASZ BŁĄD:" + ex);
                 }
-
-
-                //await DisplayAlert("Zalogowano!", "", "Dzięki zią");
-                //await Clipboard.SetTextAsync("1234");
-                //await Navigation.PushAsync(new MainPage());
             }
 
-            await DisplayAlert("Login lub hasło nieprawidłowe!", "", "Spróbuj jeszcze raz");
-
+            else
+            {
+                await DisplayAlert("Login lub hasło nieprawidłowe!", "", "Spróbuj jeszcze raz");
+            }
         }
 
         private async void GetUsersAsync()
         {
-            var usersServices = new UsersServices();
+            var usersServices = new UsersService();
             Users = await usersServices.GetUsersAsync();
-            var dupal = "ssss";
         }
 
         private bool CredentialsMatch()
@@ -177,15 +153,9 @@ namespace ListerMobile.Views
             }
         }
 
-
-
-
-
-
-
         private async void RegisterUser(User user)
         {
-            var usersServices = new UsersServices();
+            var usersServices = new UsersService();
             await usersServices.PostUserAsync(user);
         }
 
@@ -224,7 +194,6 @@ namespace ListerMobile.Views
 
         }
 
-
         public static string GetHashString(string inputString)
         {
             StringBuilder sb = new StringBuilder();
@@ -242,16 +211,12 @@ namespace ListerMobile.Views
 
         private async void RegisterButton_Clicked(object sender, EventArgs e)
         {
-
-
-            var inputValid = await ValidateInput();
-
-
+            var isInputValid = await ValidateInput();
             var hashedPassPhrase = GetHashString(PasswordRegistrationEntry.Text);
             var newUser = new User(UserNameRegistrationEntry.Text, hashedPassPhrase);
             var userExists = CheckForUser(UserNameRegistrationEntry.Text);
-            var ddd = "ddd";
-            if (!userExists && inputValid)
+
+            if (!userExists && isInputValid)
             {
                 RegisterUser(newUser);
                 GetUsersAsync();
@@ -259,7 +224,7 @@ namespace ListerMobile.Views
                 GoBackToLogin();
 
             }
-            else if (inputValid && userExists)
+            else if (isInputValid && userExists)
             {
                 await DisplayAlert("Użytkownik o takiej nazwie już istnieje, podaj inną", "", "Ok");
             }
@@ -305,7 +270,6 @@ namespace ListerMobile.Views
         private bool ComparePassPhrase(string inputPhrase)
         {
             var hashedPassPhrase = GetHashString(inputPhrase);
-            var ddd = "dupalek";
             //var matchingUserPassPhrase = Users.FirstOrDefault(n => n.PassPhrase.Equals(hashedPasPhrase));
 
             var match = FoundUser.PassPhrase.Equals(hashedPassPhrase);

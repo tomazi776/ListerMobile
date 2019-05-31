@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ListerMobile.Services
 {
-    public class UsersServices
+    public class UsersService
     {
         private const string USERS_WEB_SERVICE_PATH = "/api/Users/";
 

@@ -1,15 +1,11 @@
-﻿using ListerMobile.Models;
-using ListerMobile.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Xamarin.Forms;
 
 namespace ListerMobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<ShoppingList> DataStore => DependencyService.Get<IDataStore<ShoppingList>>() ?? new MockDataStore();
         public event PropertyChangedEventHandler PropertyChanged;
 
         bool isBusy = false;
@@ -20,8 +16,6 @@ namespace ListerMobile.ViewModels
         }
 
         string title = string.Empty;
-
-
         public string Title
         {
             get { return title; }
@@ -34,24 +28,10 @@ namespace ListerMobile.ViewModels
                 return false;
 
             backingStore = value;
-            //onChanged?.Invoke();
-            //OnPropertyChanged(propertyName);
             RaisePropertyChanged(property);
 
             return true;
         }
-
-        //#region INotifyPropertyChanged
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        //{
-        //    var changed = PropertyChanged;
-        //    if (changed == null)
-        //        return;
-
-        //    changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
-        //#endregion
 
         protected void RaisePropertyChanged(string property)
         {

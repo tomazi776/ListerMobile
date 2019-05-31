@@ -1,34 +1,37 @@
 ﻿using ListerMobile.Models;
 using ListerMobile.Services;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace ListerMobile.ViewModels
 {
     public class NewShoppingListViewModel : BaseViewModel
     {
-        public ObservableCollection<Product> FavouriteProducts { get; set; } = new ObservableCollection<Product>();
 
-
-        private ShoppingList shoppingList;
+        private ShoppingList shoppingList = new ShoppingList();
         public ShoppingList ShoppingList
         {
             get { return shoppingList; }
             set { SetProperty(ref shoppingList, value); }
         }
 
-
-        public DateTime CurrentDate { get; set; }
-        //public User User { get; set; }
-        public List<string> NewListProducts = new List<string>();
         public bool IsNewVoiceListClicked { get; set; }
+        public INavigation Navigation { get; set; }
+        public ICommand CancelCommand { get; set; }
+        public ICommand SaveCommand { get; set; }
+        public ICommand NewVoiceListCommand { get; set; }
+        public ICommand AddToVoiceListCommand { get; set; }
         private ISpeechToText speechRecongnitionInstance;
+
 
         public NewShoppingListViewModel(INavigation navigation)
         {
-            CreateMockDataForList();
+            Navigation = navigation;
+            InitializeCommands();
 
             try
             {
@@ -36,7 +39,7 @@ namespace ListerMobile.ViewModels
             }
             catch (Exception ex)
             {
-                System.Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
             }
 
             MessagingCenter.Subscribe<ISpeechToText, string>(this, "STT", (sender, args) =>
@@ -51,32 +54,13 @@ namespace ListerMobile.ViewModels
             });
         }
 
-
-        private void CreateMockDataForList()
+        private void InitializeCommands()
         {
-            ShoppingList = new ShoppingList(1,
-                GetTodaysDate(),
-                DateTime.UtcNow,
-                "- trzy - przykładowe - produkty",
-                "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
-                "TABALUGA");
-            var zzz = "ssssssssssss";
-
-            //Id = 1,
-            //    CreationDate = DateTime.UtcNow,
-            //    Name = GetTodaysDate(),
-            //    Body = "- trzy - przykładowe - produkty - lipka - masełko - kalafior - lizaczek - maślanka",
-            //    BodyHighlight = "- trzy - przykładowe - produkty"
-
-            //GetLotggedUser();
-
+            CancelCommand = new Command(Cancel);
+            SaveCommand = new Command(Save);
+            NewVoiceListCommand = new Command(SpeakButton);
+            AddToVoiceListCommand = new Command(SpeakAddButton);
         }
-
-        //private async void GetLotggedUser()
-        //{
-        //    ShoppingList.User.Id = Preferences.Get("d", )
-        //    ShoppingList.User.Name = await SecureStorage.GetAsync("loginToken");
-        //}
 
         private void SpeechToTextFinalResultRecieved(string args)
         {
@@ -95,55 +79,52 @@ namespace ListerMobile.ViewModels
         {
             if (IsNewVoiceListClicked)
             {
-                VoiceBodyEditor.Text = result;
+                MessagingCenter.Send(this, "NewVoiceButtonClicked", result);
                 IsNewVoiceListClicked = false;
             }
             else
             {
-                VoiceBodyEditor.Text += result;
+                MessagingCenter.Send(this, "AddVoiceButtonClicked", result);
             }
         }
 
-        private string GetTodaysDate()
+        private string GetTodaysDay()
         {
             var culture = new System.Globalization.CultureInfo("pl-PL");
-
-            string date = DateTime.UtcNow.ToString("dd.MM.yy");
             var day = culture.DateTimeFormat.GetDayName(DateTime.UtcNow.DayOfWeek);
-            var upperDay = char.ToUpper(day[0]) + day.Substring(1);
-            string output = upperDay.ToString();
-            return output;
+            var upperDay = char.ToUpper(day[0]) + day.Substring(1).ToString();
+            return upperDay;
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
+        async void Save()
         {
-            AdjustRecievedInput(ShoppingList.Body);
-            //AdjustName();
-
-            try
+            if (ShoppingList.Body != null)
             {
-                //ShoppingList.User = await SecureStorage.GetAsync("loginToken");
-                //ShoppingList.User = Globals.USER;
-                //var xxx = "dupal";
-                //MessagingCenter.Send(this, "ShoppingListUserName", MyStorage.USER);
-                //var sss = "dupal";
+                AdjustRecievedInput(ShoppingList.Body);
 
-                // Create method for adding Creation Date to manually created list
-                MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
+                try
+                {
+                    if (string.IsNullOrEmpty(ShoppingList.Name))
+                    {
+                        ShoppingList.Name = GetTodaysDay();
 
-                await Navigation.PopModalAsync();
+                    }
+                    ShoppingList.CreationDate = DateTime.Today;
+                    ShoppingList.User = await SecureStorage.GetAsync("loginToken");
+                    MessagingCenter.Send(this, "AddShoppingList", ShoppingList);
+                    await Navigation.PopModalAsync();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
-            catch (Exception)
+            else
             {
-                throw;
+                MessagingCenter.Send(this, "InputNotValid", ShoppingList);
             }
+
         }
-
-        //private void AdjustName()
-        //{
-        //    var date = DateTime.Today.ToString("dd.MM.yy");
-        //    ShoppingList.Name += " " + date;
-        //}
 
         private void AdjustRecievedInput(string body)
         {
@@ -151,7 +132,7 @@ namespace ListerMobile.ViewModels
             ShoppingList.BodyHighlight = MakeHighlightFromBody(body);
         }
 
-        async void Cancel_Clicked(object sender, EventArgs e)
+        async void Cancel()
         {
             await Navigation.PopModalAsync();
         }
@@ -184,13 +165,13 @@ namespace ListerMobile.ViewModels
             return words.ToArray();
         }
 
-        private void SpeakButton_Clicked(object sender, EventArgs e)
+        private void SpeakButton()
         {
             IsNewVoiceListClicked = true;
             InvokeConcreteImplementation();
         }
 
-        private void SpeakAddButton_Clicked(object sender, EventArgs e)
+        private void SpeakAddButton()
         {
             InvokeConcreteImplementation();
         }
@@ -206,9 +187,5 @@ namespace ListerMobile.ViewModels
                 System.Console.WriteLine(ex.Message);
             }
         }
-
-
-
-
     }
 }
