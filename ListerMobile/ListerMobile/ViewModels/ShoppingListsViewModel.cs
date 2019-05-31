@@ -3,9 +3,9 @@ using ListerMobile.Services;
 using ListerMobile.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace ListerMobile.ViewModels
@@ -15,10 +15,9 @@ namespace ListerMobile.ViewModels
         private const string SHOPPING_LISTS_PAGE_TITLE = "Moje Listy";
         public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
 
+
         public bool HadBeenInitialized { get; set; }
-        //public ObservableCollection<ShoppingList> ArchivedLists { get; set; } = new ObservableCollection<ShoppingList>();
         private bool IsListRemoved { get; set; } = false;
-        private ShoppingList ListToBeRemoved { get; set; } = new ShoppingList();
         public Command LoadItemsCommand { get; set; }
 
         private ObservableCollection<ShoppingList> _myShoppingLists;
@@ -28,7 +27,6 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref _myShoppingLists, value); }
         }
 
-
         /// <summary>
         /// Initializes Data fetched from server
         /// </summary>
@@ -36,161 +34,57 @@ namespace ListerMobile.ViewModels
         {
             Title = SHOPPING_LISTS_PAGE_TITLE;
             MyShoppingLists = new ObservableCollection<ShoppingList>();
-            //LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+
+            InitializeDataAsync();
 
 
-
-            // Adds newly created ShoppingList for display 
-            MessagingCenter.Subscribe<NewShoppingListPage, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
+            MessagingCenter.Subscribe<NewShoppingListViewModel, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
             {
-                var newShoppingList = item as ShoppingList;
-                var shoppingListsServices = new ShoppingListsServices();
+                try
+                {
+                    var newShoppingList = item as ShoppingList;
+                    var shoppingListsServices = new ShoppingListsService();
 
-                await shoppingListsServices.PostShoppingListAsync(newShoppingList);
-                MyShoppingLists.Add(newShoppingList);
+                    await shoppingListsServices.PostShoppingListAsync(newShoppingList);
+                    MyShoppingLists.Add(newShoppingList);
+                }
+                catch (System.Exception ex)
+                {
+
+                    Debug.WriteLine(ex);
+                }
             });
-
 
             MessagingCenter.Subscribe<ShoppingListDetailViewModel, ShoppingList>(this, "UpdateShoppingList", async (obj, item) =>
             {
                 var newShoppingList = item as ShoppingList;
-                var shoppingListsServices = new ShoppingListsServices();
+                var shoppingListsServices = new ShoppingListsService();
 
                 await shoppingListsServices.PutShoppingListAsync(newShoppingList.Id, newShoppingList);
                 await InitializeDataAsync();
             });
 
-            // Deletes selected shoppingList from the View and Server
             MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "DeleteShoppingList", async (obj, item) =>
             {
 
                 var shoppingList = item as ShoppingList;
-                var shoppingListsServices = new ShoppingListsServices();
+                var shoppingListsServices = new ShoppingListsService();
 
                 MyShoppingLists.Remove(shoppingList);
                 await shoppingListsServices.DeleteShoppingListAsync(shoppingList.Id);
-
             });
-
-            //MessagingCenter.Subscribe<StartingPage, bool>(this, "FetchServerData", async (obj, item) =>
-            //{
-            //    if (item)
-            //    {
-            //        await InitializeDataAsync();
-            //    }
-
-            //});
-
-            InitializeDataAsync();
         }
 
         private async Task InitializeDataAsync()
         {
-            var shoppingListsServices = new ShoppingListsServices();
+            var shoppingListsServices = new ShoppingListsService();
             var shoppingLists = await shoppingListsServices.GetShoppingListsAsync();
-            AdjustBodyAndHighlightInput();
+
+            var userName = await SecureStorage.GetAsync("loginToken");
+            //var shoppingLists = await shoppingListsServices.GetUserShoppingListsAsync(userName);     //TODO  Modify service to get all the ShoppingLists for currently logged User
+
             MyShoppingLists = shoppingLists;
         }
-
-
-        private void AdjustBodyAndHighlightInput()
-        {
-            foreach (var item in MyShoppingLists)
-            {
-                item.Body = item.Body.TrimEnd('\r', '\n', ' ', ',', '.');
-                item.BodyHighlight = MakeHighlightFromBody(item.Body);
-                if (item.CreationDate == null)
-                {
-                    return;
-                }
-            }
-        }
-
-        private string MakeHighlightFromBody(string body)
-        {
-            var bodyElement = GetWords(body);
-            string result = string.Empty;
-            for (int i = 0; i < bodyElement.Length; i++)
-            {
-                if (bodyElement.Length >= 4)
-                {
-                    result = "\n- " + bodyElement[0] + "\n- " + bodyElement[1] + "\n- " + bodyElement[2];
-                    return result;
-                }
-                var temp = "\n- " + bodyElement[i];
-                result += temp;
-            }
-            return result;
-        }
-
-        private static string[] GetWords(string input)
-        {
-            MatchCollection matches = Regex.Matches(input, @"\b[\w']*\b");
-
-            var words = from m in matches.Cast<Match>()
-                        where !string.IsNullOrEmpty(m.Value)
-                        select m.Value;
-
-            return words.ToArray();
-        }
-
-        //async Task ExecuteLoadItemsCommand()
-        //{
-        //    if (IsBusy)
-        //        return;
-
-        //    IsBusy = true;
-
-        //    try
-        //    {
-        //        await InitializeDataAsync();
-
-        //        if (IsListRemoved)
-        //        {
-        //            //MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "DeleteShoppingList", (obj, item) =>
-        //            //{
-        //            //    ListToBeRemoved = item;
-        //            //    RemoveList(ListToBeRemoved);
-
-        //            //});
-
-        //            //foreach (var item in MovedToArchiveLists)
-        //            //{
-        //            //    var list = MovedToArchiveLists[item.Id];
-        //            //    MyShoppingLists.RemoveAt();
-
-        //            //}
-
-        //            RemoveList(ListToBeRemoved);
-
-
-        //        }
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine(ex);
-        //    }
-        //    finally
-        //    {
-        //        IsBusy = false;
-        //    }
-        //}
-
-        //async Task ExecuteDeleteItemCommand()
-        //{
-        //    try
-        //    {
-        //        var items = await DataStore.DeleteItemAsync();
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
-
     }
 }
 

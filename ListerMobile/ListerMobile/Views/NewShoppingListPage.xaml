@@ -28,16 +28,18 @@
     <ContentPage Title="Zwykła" BackgroundColor="#0f0f0f">
         <StackLayout Spacing="15" Padding="15">
             <Label Text="Nazwa Listy" TextColor="White" FontSize="Small" />
-            <Entry Text="{Binding ShoppingList.Name}" 
+            <Entry x:Name="EntryListName" Text="{Binding ShoppingList.Name}" 
                    TextColor="White" 
                    FontSize="Small" 
                    Placeholder="Dzisiejsza data" 
                    PlaceholderColor="White"
                    BackgroundColor="#171916" />
             <Label Text="Treść" TextColor="White" FontSize="Medium" />
-            <Editor x:Name="BodyEditor"
+            <Editor x:Name="EditorListBody"
                     Text="{Binding ShoppingList.Body}"
                     TextColor="White"
+                    Placeholder="Np:&#x0a; - pomidory &#x0a; - mleko &#x0a; - banany &#x0a; - kurczak"
+                    PlaceholderColor="AntiqueWhite"
                     BackgroundColor="#171916"
                     FontSize="Small" 
                     Margin="0"
@@ -51,15 +53,15 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="0.3*"/>
                 </Grid.RowDefinitions>
-                <ImageButton x:Name="CancelImageBtn" Grid.Row="1" Grid.Column="0" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
-                <ImageButton x:Name="SaveImageBtn" Grid.Row="1" Grid.Column="1" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
+                <ImageButton x:Name="CancelImageBtn" Grid.Row="1" Grid.Column="0" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Command="{Binding CancelCommand}"/>
+                <ImageButton x:Name="SaveImageBtn" Grid.Row="1" Grid.Column="1" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Command="{Binding SaveCommand}"/>
             </Grid>
         </StackLayout>
     </ContentPage>
     <ContentPage Title="Głosowa">
         <StackLayout Spacing="15" Padding="15">
             <Label Text="Nazwa Listy" TextColor="White" FontSize="Small" />
-            <Entry Text="{Binding ShoppingList.Name}" TextColor="White" FontSize="Small" Placeholder="Dzisiejsza data" PlaceholderColor="White"
+            <Entry x:Name="EntryVoiceListName" Text="{Binding ShoppingList.Name}" TextColor="White" FontSize="Small" Placeholder="Dzisiejsza data" PlaceholderColor="White"
                    BackgroundColor="Black" />
             <Grid Padding="0" Margin="0">
                 <Grid.ColumnDefinitions>
@@ -70,10 +72,10 @@
                     <RowDefinition Height="65"/>
                     <RowDefinition Height="65"/>
                 </Grid.RowDefinitions>
-                <ImageButton Grid.Column="0" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Clicked="SpeakButton_Clicked"/>
-                <Label Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" Text="Od nowa" TextColor="White"/>
-                <ImageButton Grid.Column="1" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Clicked="SpeakAddButton_Clicked"/>
-                <Label Grid.Column="1" Grid.Row="1" Text="Dodaj kolejne" TextColor="White" HorizontalOptions="Center"/>
+                <ImageButton Grid.Column="0" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Command="{Binding NewVoiceListCommand}"/>
+                <Label Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" Text="Od nowa" TextColor="Black"/>
+                <ImageButton Grid.Column="1" Grid.Row="0" BackgroundColor="Transparent" Source="mic_icon.png" HeightRequest="60" HorizontalOptions="Center" Command="{Binding AddToVoiceListCommand}"/>
+                <Label Grid.Column="1" Grid.Row="1" Text="Dodaj kolejne" TextColor="Black" HorizontalOptions="Center"/>
             </Grid>
             <Label Text="Treść" TextColor="White" FontSize="Small" Margin="0" />
             <Grid Padding="0" Margin="0">
@@ -95,8 +97,8 @@
                             FontSize="Small" 
                             Margin="0"
                             AutoSize="TextChanges"/>
-                <ImageButton Grid.Column="0" Grid.Row="2" VerticalOptions="Center" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Cancel_Clicked"/>
-                <ImageButton Grid.Column="1" Grid.Row="2" VerticalOptions="Center" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Clicked="Save_Clicked"/>
+                <ImageButton Grid.Column="0" Grid.Row="2" VerticalOptions="Center" Source="cancel_red.png" BackgroundColor="Transparent" BorderColor="Transparent" Command="{Binding CancelCommand}"/>
+                <ImageButton Grid.Column="1" Grid.Row="2" VerticalOptions="Center" Source="check_green.png" BackgroundColor="Transparent" BorderColor="Transparent" Command="{Binding SaveCommand}"/>
             </Grid>
         </StackLayout>
     </ContentPage> 

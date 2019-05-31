@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using ListerMobile.Models;
+using System.Data.Entity;
 
 namespace ListerWebServices.Models
 {
@@ -23,6 +24,7 @@ namespace ListerWebServices.Models
         //}
 
 
-        public System.Data.Entity.DbSet<ListerMobile.Models.ShoppingList> ShoppingLists { get; set; }
+        public DbSet<ShoppingList> ShoppingLists { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

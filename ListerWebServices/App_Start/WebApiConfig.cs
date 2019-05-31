@@ -11,6 +11,15 @@ namespace ListerWebServices
             // Web API routes
             config.MapHttpAttributeRoutes();
 
+
+            // school route
+            config.Routes.MapHttpRoute(
+                name: "UsersShoppingLists",
+                routeTemplate: "api/{controller}/{userName}/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
