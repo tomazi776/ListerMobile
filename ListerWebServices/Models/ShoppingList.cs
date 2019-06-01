@@ -11,6 +11,7 @@ namespace ListerMobile.Models
         public string BodyHighlight { get; set; }
         public string Body { get; set; }
         public string User { get; set; }
+        public List<User> Users { get; set; }
         public virtual ICollection<Product> Products { get; set; }
     }
 }

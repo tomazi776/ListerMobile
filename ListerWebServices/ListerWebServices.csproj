@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201905271846046_change_ShoppingListModel.Designer.cs">
       <DependentUpon>201905271846046_change_ShoppingListModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906011924084_Modify_ShoppingListModel.cs" />
+    <Compile Include="Migrations\201906011924084_Modify_ShoppingListModel.Designer.cs">
+      <DependentUpon>201906011924084_Modify_ShoppingListModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ShoppingList.cs" />
@@ -340,6 +344,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905271846046_change_ShoppingListModel.resx">
       <DependentUpon>201905271846046_change_ShoppingListModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906011924084_Modify_ShoppingListModel.resx">
+      <DependentUpon>201906011924084_Modify_ShoppingListModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
