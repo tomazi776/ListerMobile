@@ -16,9 +16,7 @@ namespace ListerMobile.ViewModels
         public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
 
 
-        public bool HadBeenInitialized { get; set; }
         private bool IsListRemoved { get; set; } = false;
-        public Command LoadItemsCommand { get; set; }
 
         private ObservableCollection<ShoppingList> _myShoppingLists;
         public ObservableCollection<ShoppingList> MyShoppingLists
@@ -27,14 +25,18 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref _myShoppingLists, value); }
         }
 
+        //public ICommand SendToUserCommand { get; set; }
+
         /// <summary>
         /// Initializes Data fetched from server
         /// </summary>
-        public ShoppingListsViewModel()
+        public ShoppingListsViewModel(INavigation navigation)
         {
             Title = SHOPPING_LISTS_PAGE_TITLE;
             MyShoppingLists = new ObservableCollection<ShoppingList>();
+            Navigation = navigation;
 
+            //SendToUserCommand = new Command(SendList);
             InitializeDataAsync();
 
 
@@ -74,6 +76,11 @@ namespace ListerMobile.ViewModels
                 await shoppingListsServices.DeleteShoppingListAsync(shoppingList.Id);
             });
         }
+
+        //public async void SendList()
+        //{
+        //    await Navigation.PushAsync(new NavigationPage(new SendPage()));
+        //}
 
         private async Task InitializeDataAsync()
         {

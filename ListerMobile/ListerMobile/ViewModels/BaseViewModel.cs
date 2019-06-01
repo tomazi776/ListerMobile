@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Xamarin.Forms;
 
 namespace ListerMobile.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public INavigation Navigation { get; set; }
 
         bool isBusy = false;
         public bool IsBusy

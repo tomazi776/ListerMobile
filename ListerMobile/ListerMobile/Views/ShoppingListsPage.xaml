@@ -6,9 +6,9 @@
              BackgroundColor="Black"
              Title="{Binding Title}" NavigationPage.HasNavigationBar="True">
     
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <viewModels:ShoppingListsViewModel/>
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
     
     <!--<ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
@@ -201,7 +201,7 @@
                                         HeightRequest="30"
                                         WidthRequest="30"
                                         BackgroundColor="Transparent" 
-                                        BorderColor="Transparent" >
+                                        BorderColor="Transparent" Clicked="SendListButton_Clicked" >
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
                                                     <VisualState x:Name="Normal">
