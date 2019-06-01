@@ -12,7 +12,7 @@ namespace ListerMobile.Views
         public ReceivedPage()
         {
             InitializeComponent();
-            BindingContext = viewModel = new ShoppingListsViewModel();
+            BindingContext = viewModel = new ShoppingListsViewModel(Navigation);
             viewModel.Title = "Odebrane Listy";
         }
 

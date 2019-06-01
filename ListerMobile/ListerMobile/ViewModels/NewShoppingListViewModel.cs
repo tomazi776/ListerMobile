@@ -20,7 +20,6 @@ namespace ListerMobile.ViewModels
         }
 
         public bool IsNewVoiceListClicked { get; set; }
-        public INavigation Navigation { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand NewVoiceListCommand { get; set; }
