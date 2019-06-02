@@ -4,6 +4,7 @@ using ListerMobile.Services;
 using ListerMobile.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -26,7 +27,8 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref knownusers, value); }
         }
 
-        public User User { get; set; } = new User();
+        public User LoggedUser { get; set; }
+        public User ChosenUser { get; set; }
 
         public ShoppingList ShoppingList { get; set; } = new ShoppingList();
 
@@ -36,14 +38,43 @@ namespace ListerMobile.ViewModels
         {
             Title = "Wyślij do";
             //SendToSelectedUserCommand = new Command(SendShoppingList);
+            //AssignLoggedUserName();
+            InitialiseUsers();
             InitializeDataAsync();
 
-            MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "SendListButtonClicked", async (obj, item) =>
+            MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "SendListButtonClicked", (obj, item) =>
             {
+                ShoppingList = item;
+                ShoppingList.Users = new List<User>();
+                var d = "s";
+            });
 
-                var shoppingList = item as ShoppingList;
-                //var shoppingListsServices = new ShoppingListsService();
-                ShoppingList = shoppingList;
+            MessagingCenter.Subscribe<SendPage, User>(this, "SendToChosenUser", async (sender, arg) =>
+            {
+                var user = arg as User;
+                ChosenUser = user;
+
+                LoggedUser.Name = MyStorage.GetMyStorageInstance.LoggedUser.Name;
+                LoggedUser.PassPhrase = MyStorage.GetMyStorageInstance.LoggedUser.PassPhrase;
+
+                if (ShoppingList.Users.Contains(LoggedUser) || ShoppingList.Users.Contains(ChosenUser))
+                {
+                    return;
+                }
+
+                ShoppingList.Users.Add(LoggedUser);
+                var rrrrr = "ssss";
+                ShoppingList.Users.Add(ChosenUser);
+                var dupelek = "ssss";
+
+                foreach (var item in ShoppingList.Users)
+                {
+                    Debug.Write(item.Name);
+                }
+
+                var shoppingListsService = new ShoppingListsService();
+                await shoppingListsService.PutShoppingListAsync(ShoppingList.Id, ShoppingList);
+
             });
 
             MessagingCenter.Subscribe<SendPage, string>(this, "SearchUserClicked", (sender, arg) =>
@@ -51,6 +82,17 @@ namespace ListerMobile.ViewModels
                 GetSearchedUser(arg);
             });
         }
+
+        private void InitialiseUsers()
+        {
+            LoggedUser = new User();
+            ChosenUser = new User();
+        }
+
+        //private async void AssignLoggedUserName()
+        //{
+        //    LoggedUser.Name = await SecureStorage.GetAsync("loginToken");
+        //}
 
         private void GetSearchedUser(string userName)
         {
@@ -90,10 +132,10 @@ namespace ListerMobile.ViewModels
 
         private async void FilterUsersFromCurrent(ObservableCollection<User> users)
         {
-            var loggedUser = await SecureStorage.GetAsync("loginToken");
+            var loggedUserName = await SecureStorage.GetAsync("loginToken");
             IEnumerable<User> enumerableUsers = users;
             var listofUsers = new List<User>(enumerableUsers);
-            var thisUser = listofUsers.Find(n => n.Name.Equals(loggedUser));
+            var thisUser = listofUsers.Find(n => n.Name.Equals(loggedUserName));
             listofUsers.Remove(thisUser);
 
             //var observableUsers = new ObservableCollection<User>(listofUsers);

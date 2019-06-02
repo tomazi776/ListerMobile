@@ -1,4 +1,5 @@
 ﻿using ListerMobile.Models;
+using ListerMobile.ViewModels;
 using System;
 using System.Diagnostics;
 using Xamarin.Forms;
@@ -10,19 +11,31 @@ namespace ListerMobile.Views
     public partial class SendPage : ContentPage
     {
         public string UserNameEntryText { get; set; }
-
+        SendToUserViewModel viewModel;
         public SendPage()
         {
             InitializeComponent();
+            BindingContext = viewModel = new SendToUserViewModel();
+
         }
 
         private void SendShoppingListToUser_Clicked(object sender, EventArgs e)
         {
-            ImageButton btn = sender as ImageButton;
-            var item = btn.BindingContext as ShoppingList;
-            if (item == null) return;
 
-            MessagingCenter.Send(this, "SendToUser");
+            try
+            {
+                ImageButton btn = sender as ImageButton;
+                var item = btn.BindingContext as User;
+                if (item == null) return;
+
+                MessagingCenter.Send(this, "SendToChosenUser", item);
+            }
+            catch (Exception ex)
+            {
+
+                Debug.Write(ex.InnerException);
+            }
+
         }
 
         private void SearchUser_Clicked(object sender, EventArgs e)

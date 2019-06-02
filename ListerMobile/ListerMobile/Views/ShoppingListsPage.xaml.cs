@@ -44,9 +44,11 @@ namespace ListerMobile.Views
             var item = btn.BindingContext as ShoppingList;
             if (item == null) return;
 
-            MessagingCenter.Send(this, "SendListButtonClicked", item);
 
             await Navigation.PushModalAsync(new NavigationPage(new SendPage()));
+
+            MessagingCenter.Send(this, "SendListButtonClicked", item);
+
         }
     }
 }
