@@ -3,7 +3,7 @@ namespace ListerWebServices.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class First_Migration : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -16,6 +16,8 @@ namespace ListerWebServices.Migrations
                         CreationDate = c.DateTime(),
                         BodyHighlight = c.String(),
                         Body = c.String(),
+                        User = c.String(),
+                        Users = c.String(),
                         User_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -41,6 +43,7 @@ namespace ListerWebServices.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(),
+                        PassPhrase = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             

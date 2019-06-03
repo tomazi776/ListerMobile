@@ -11,11 +11,19 @@ namespace ListerMobile.Views
     public partial class SendPage : ContentPage
     {
         public string UserNameEntryText { get; set; }
+        public ShoppingList ShoppingList { get; set; } = new ShoppingList();
+
         SendToUserViewModel viewModel;
-        public SendPage()
+
+
+        public SendPage(ShoppingList list)
         {
+
+
             InitializeComponent();
-            BindingContext = viewModel = new SendToUserViewModel();
+            ShoppingList = list;
+            BindingContext = viewModel = new SendToUserViewModel(ShoppingList);
+
 
         }
 
@@ -27,8 +35,9 @@ namespace ListerMobile.Views
                 ImageButton btn = sender as ImageButton;
                 var item = btn.BindingContext as User;
                 if (item == null) return;
+                var userName = item.Name;
 
-                MessagingCenter.Send(this, "SendToChosenUser", item);
+                MessagingCenter.Send(this, "SendToChosenUser", userName);
             }
             catch (Exception ex)
             {
