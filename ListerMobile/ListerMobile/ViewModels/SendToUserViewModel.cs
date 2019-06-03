@@ -29,77 +29,39 @@ namespace ListerMobile.ViewModels
 
         public string LoggedUser { get; set; }
         public string ChosenUser { get; set; }
-
         public ShoppingList ShoppingList { get; set; } = new ShoppingList();
         public ShoppingList SendingShippingList { get; set; } = new ShoppingList();
 
-        //ICommand SendToSelectedUserCommand { get; set; }
 
         public SendToUserViewModel(ShoppingList list)
         {
             Title = "Wyślij do";
             ShoppingList = list;
-
-
-            AssignAdequateValueTosers();
-
-            var ddd = "dddddddd";
-            //SendToSelectedUserCommand = new Command(SendShoppingList);
-            //AssignLoggedUserName();
             GetCurrentUser();
+            AssignAdequateValueTosers();
             InitializeDataAsync();
-
-            //MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "SendListButtonClicked", (obj, item) =>
-            //{
-
-            //    try
-            //    {
-            //        //ShoppingList.Id = item.Id;
-            //        //ShoppingList.Name = item.Name;
-            //        //ShoppingList.Body = item.Body;
-            //        //ShoppingList.BodyHighlight = item.BodyHighlight;
-            //        //ShoppingList.CreationDate = item.CreationDate;
-            //        //ShoppingList.User = item.User;
-
-            //        ShoppingList = item;
-
-
-
-            //        var d = "s";
-            //    }
-            //    catch (System.Exception)
-            //    {
-
-            //        throw;
-            //    }
-
-            //});
 
             MessagingCenter.Subscribe<SendPage, string>(this, "SendToChosenUser", async (sender, arg) =>
            {
                try
                {
-                   var userName = arg;
-                   ChosenUser = userName;
+                   ChosenUser = arg;
+
+                   if (ShoppingList.Users.Contains(ChosenUser))
+                   {
+                       MessagingCenter.Send(this, "AlreadySentAlert");
+
+                       return;
+                   }
 
                    EvaluateUsers();
 
-                   //if (ShoppingList.Users.Contains(LoggedUser) || ShoppingList.Users.Contains(ChosenUser))
-                   //{
-                   //    return;
-                   //}
-
-                   var shoppingListsService = new ShoppingListsService();
-                   await shoppingListsService.PutShoppingListAsync(ShoppingList.Id, ShoppingList);
+                   SendShoppingList(ShoppingList);
                }
                catch (Exception ex)
                {
-
                    Debug.Write(ex.InnerException.Message);
                }
-
-
-
            });
 
             MessagingCenter.Subscribe<SendPage, string>(this, "SearchUserClicked", (sender, arg) =>
@@ -110,7 +72,7 @@ namespace ListerMobile.ViewModels
 
         private void AssignAdequateValueTosers()
         {
-            if (ShoppingList.Users != string.Empty )
+            if (ShoppingList.Users != null)
             {
                 return;
             }
@@ -125,21 +87,11 @@ namespace ListerMobile.ViewModels
                 ShoppingList.Users = LoggedUser;
             }
 
-            if (ShoppingList.Users.Contains(ChosenUser))
-            {
-                return;
-            }
             else
             {
                 ShoppingList.Users += " " + ChosenUser;
             }
         }
-
-
-        //private async void AssignLoggedUserName()
-        //{
-        //    LoggedUser.Name = await SecureStorage.GetAsync("loginToken");
-        //}
 
         private void GetSearchedUser(string userName)
         {
@@ -152,22 +104,15 @@ namespace ListerMobile.ViewModels
             MyStorage.GetMyStorageInstance.FriendlyUsers.Add(searchedUser);
 
             KnownUsers = MyStorage.GetMyStorageInstance.FriendlyUsers;
-
-            //foreach (var user in MyStorage.GetMyStorageInstance.FriendlyUsers)
-            //{
-            //    KnownUsers.Add(searchedUser);
-            //}
-
-
-
-            //KnownUsers.Add(searchedUser);
         }
 
-        //private void SendShoppingList(object list)
-        //{
-        //    //var shoppingListService = new ShoppingListsService();
-        //    var dupal = "sss";
-        //}
+        private async void SendShoppingList(ShoppingList list)
+        {
+            var shoppingListsService = new ShoppingListsService();
+            await shoppingListsService.PutShoppingListAsync(list.Id, list);
+
+            //MessagingCenter.Send(this, "ListHasBeenSent");
+        }
 
         private async void InitializeDataAsync()
         {

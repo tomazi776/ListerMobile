@@ -24,6 +24,16 @@ namespace ListerMobile.Views
             ShoppingList = list;
             BindingContext = viewModel = new SendToUserViewModel(ShoppingList);
 
+            MessagingCenter.Subscribe<SendToUserViewModel>(this, "AlreadySentAlert", (sender) =>
+            {
+                DisplayAlert("Lista została już wysłana", "", "OK");
+            });
+
+
+            MessagingCenter.Subscribe<SendToUserViewModel>(this, "ListHasBeenSent", (sender) =>
+            {
+
+            });
 
         }
 
