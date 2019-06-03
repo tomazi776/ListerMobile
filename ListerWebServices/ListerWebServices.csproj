@@ -37,9 +37,9 @@
     <PublishDatabaseSettings>
       <Objects>
         <ObjectGroup Name="ShoppingListsContext-Deployment" Order="1" Enabled="True">
-          <Destination Path="Server=tcp:apka1trialserver.database.windows.net,1433%3bInitial Catalog=apka1trialDatabase%3bPersist Security Info=False%3bUser ID={tomasz}%3bPassword={Junior77}%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=False%3bConnection Timeout=30%3b" />
-          <Object Type="DbFullSql" Enabled="False">
-            <PreSource Path="Data Source=%28localdb%29\MSSQLLocalDB%3b Initial Catalog=ShoppingListsContext-20190325185926%3b Integrated Security=SSPI%3b MultipleActiveResultSets=True%3b AttachDbFilename=|DataDirectory|ShoppingListsContext-20190325185926.mdf" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+          <Destination Path="Server=tcp:apka1trialserver.database.windows.net,1433%3bInitial Catalog=ListerAzureDB%3bPersist Security Info=False%3bUser ID={tomasz}%3bPassword={Junior77}%3bMultipleActiveResultSets=False%3bEncrypt=True%3bTrustServerCertificate=False%3bConnection Timeout=30%3b" />
+          <Object Type="DbFullSql" Enabled="True">
+            <PreSource Path="Data Source=%28localdb%29\MSSQLLocalDB%3bInitial Catalog=ShoppingListsContext-20190325185926%3bIntegrated Security=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Debug\AutoScripts\ShoppingListsContext-Deployment_SchemaAndData.sql" Transacted="True" />
           </Object>
         </ObjectGroup>
@@ -71,10 +71,10 @@
     <WarningLevel>4</WarningLevel>
     <PublishDatabaseSettings>
       <Objects>
-        <ObjectGroup Name="ShoppingListsContext-Deployment" Order="1" xmlns="">
-          <Destination Path="Data Source=apka1trialserver.database.windows.net%3bInitial Catalog=ListerDB%3bUser ID=tomasz%3bPassword=Junior77%3bMultipleActiveResultSets=True" />
+        <ObjectGroup Name="ShoppingListsContext-Deployment" Order="1" xmlns="" Enabled="True">
+          <Destination Path="Data Source=apka1trialserver.database.windows.net%3bInitial Catalog=ListerAzureDB%3bUser ID=tomasz%3bPassword=Junior77%3bMultipleActiveResultSets=True" />
           <Object Type="DbFullSql">
-            <PreSource Path="Data Source=%28localdb%29\MSSQLLocalDB%3bInitial Catalog=ShoppingListsContext-20190325185926%3bIntegrated Security=True%3bMultipleActiveResultSets=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <PreSource Path="Data Source=%28localdb%29\MSSQLLocalDB%3bInitial Catalog=ShoppingListsContext-20190325185926%3bIntegrated Security=True" ScriptSchema="True" ScriptData="True" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Release\AutoScripts\ShoppingListsContext-Deployment_SchemaAndData.sql" Transacted="True" />
           </Object>
         </ObjectGroup>
@@ -212,21 +212,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904051728290_First_Migration.cs" />
-    <Compile Include="Migrations\201904051728290_First_Migration.Designer.cs">
-      <DependentUpon>201904051728290_First_Migration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905141847404_Add_PassPhraseToUserModel.cs" />
-    <Compile Include="Migrations\201905141847404_Add_PassPhraseToUserModel.Designer.cs">
-      <DependentUpon>201905141847404_Add_PassPhraseToUserModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905271846046_change_ShoppingListModel.cs" />
-    <Compile Include="Migrations\201905271846046_change_ShoppingListModel.Designer.cs">
-      <DependentUpon>201905271846046_change_ShoppingListModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906011924084_Modify_ShoppingListModel.cs" />
-    <Compile Include="Migrations\201906011924084_Modify_ShoppingListModel.Designer.cs">
-      <DependentUpon>201906011924084_Modify_ShoppingListModel.cs</DependentUpon>
+    <Compile Include="Migrations\201906021924053_Initial.cs" />
+    <Compile Include="Migrations\201906021924053_Initial.Designer.cs">
+      <DependentUpon>201906021924053_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Product.cs" />
@@ -336,17 +324,8 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904051728290_First_Migration.resx">
-      <DependentUpon>201904051728290_First_Migration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905141847404_Add_PassPhraseToUserModel.resx">
-      <DependentUpon>201905141847404_Add_PassPhraseToUserModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905271846046_change_ShoppingListModel.resx">
-      <DependentUpon>201905271846046_change_ShoppingListModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906011924084_Modify_ShoppingListModel.resx">
-      <DependentUpon>201906011924084_Modify_ShoppingListModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906021924053_Initial.resx">
+      <DependentUpon>201906021924053_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

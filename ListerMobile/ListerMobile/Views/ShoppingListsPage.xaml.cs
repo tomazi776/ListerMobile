@@ -45,9 +45,10 @@ namespace ListerMobile.Views
             if (item == null) return;
 
 
-            await Navigation.PushModalAsync(new NavigationPage(new SendPage()));
 
-            MessagingCenter.Send(this, "SendListButtonClicked", item);
+            await Navigation.PushModalAsync(new NavigationPage(new SendPage(item)));
+
+            //MessagingCenter.Send(this, "SendListButtonClicked", item);
 
         }
     }

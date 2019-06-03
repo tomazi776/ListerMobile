@@ -2,10 +2,10 @@
 using ListerMobile.Models;
 using ListerMobile.Services;
 using ListerMobile.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -27,55 +27,80 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref knownusers, value); }
         }
 
-        public User LoggedUser { get; set; }
-        public User ChosenUser { get; set; }
+        public string LoggedUser { get; set; }
+        public string ChosenUser { get; set; }
 
         public ShoppingList ShoppingList { get; set; } = new ShoppingList();
+        public ShoppingList SendingShippingList { get; set; } = new ShoppingList();
 
         //ICommand SendToSelectedUserCommand { get; set; }
 
-        public SendToUserViewModel()
+        public SendToUserViewModel(ShoppingList list)
         {
             Title = "Wyślij do";
+            ShoppingList = list;
+
+
+            AssignAdequateValueTosers();
+
+            var ddd = "dddddddd";
             //SendToSelectedUserCommand = new Command(SendShoppingList);
             //AssignLoggedUserName();
-            InitialiseUsers();
+            GetCurrentUser();
             InitializeDataAsync();
 
-            MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "SendListButtonClicked", (obj, item) =>
-            {
-                ShoppingList = item;
-                ShoppingList.Users = new List<User>();
-                var d = "s";
-            });
+            //MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "SendListButtonClicked", (obj, item) =>
+            //{
 
-            MessagingCenter.Subscribe<SendPage, User>(this, "SendToChosenUser", async (sender, arg) =>
-            {
-                var user = arg as User;
-                ChosenUser = user;
+            //    try
+            //    {
+            //        //ShoppingList.Id = item.Id;
+            //        //ShoppingList.Name = item.Name;
+            //        //ShoppingList.Body = item.Body;
+            //        //ShoppingList.BodyHighlight = item.BodyHighlight;
+            //        //ShoppingList.CreationDate = item.CreationDate;
+            //        //ShoppingList.User = item.User;
 
-                LoggedUser.Name = MyStorage.GetMyStorageInstance.LoggedUser.Name;
-                LoggedUser.PassPhrase = MyStorage.GetMyStorageInstance.LoggedUser.PassPhrase;
+            //        ShoppingList = item;
 
-                if (ShoppingList.Users.Contains(LoggedUser) || ShoppingList.Users.Contains(ChosenUser))
-                {
-                    return;
-                }
 
-                ShoppingList.Users.Add(LoggedUser);
-                var rrrrr = "ssss";
-                ShoppingList.Users.Add(ChosenUser);
-                var dupelek = "ssss";
 
-                foreach (var item in ShoppingList.Users)
-                {
-                    Debug.Write(item.Name);
-                }
+            //        var d = "s";
+            //    }
+            //    catch (System.Exception)
+            //    {
 
-                var shoppingListsService = new ShoppingListsService();
-                await shoppingListsService.PutShoppingListAsync(ShoppingList.Id, ShoppingList);
+            //        throw;
+            //    }
 
-            });
+            //});
+
+            MessagingCenter.Subscribe<SendPage, string>(this, "SendToChosenUser", async (sender, arg) =>
+           {
+               try
+               {
+                   var userName = arg;
+                   ChosenUser = userName;
+
+                   EvaluateUsers();
+
+                   //if (ShoppingList.Users.Contains(LoggedUser) || ShoppingList.Users.Contains(ChosenUser))
+                   //{
+                   //    return;
+                   //}
+
+                   var shoppingListsService = new ShoppingListsService();
+                   await shoppingListsService.PutShoppingListAsync(ShoppingList.Id, ShoppingList);
+               }
+               catch (Exception ex)
+               {
+
+                   Debug.Write(ex.InnerException.Message);
+               }
+
+
+
+           });
 
             MessagingCenter.Subscribe<SendPage, string>(this, "SearchUserClicked", (sender, arg) =>
             {
@@ -83,11 +108,33 @@ namespace ListerMobile.ViewModels
             });
         }
 
-        private void InitialiseUsers()
+        private void AssignAdequateValueTosers()
         {
-            LoggedUser = new User();
-            ChosenUser = new User();
+            if (ShoppingList.Users != string.Empty )
+            {
+                return;
+            }
+
+            ShoppingList.Users = "";
         }
+
+        private void EvaluateUsers()
+        {
+            if (!ShoppingList.Users.Contains(LoggedUser))
+            {
+                ShoppingList.Users = LoggedUser;
+            }
+
+            if (ShoppingList.Users.Contains(ChosenUser))
+            {
+                return;
+            }
+            else
+            {
+                ShoppingList.Users += " " + ChosenUser;
+            }
+        }
+
 
         //private async void AssignLoggedUserName()
         //{
@@ -144,9 +191,9 @@ namespace ListerMobile.ViewModels
 
 
 
-        private async Task<string> GetCurrentUser()
+        private async void GetCurrentUser()
         {
-            return await SecureStorage.GetAsync("loginToken");
+            LoggedUser = await SecureStorage.GetAsync("loginToken");
         }
     }
 }
