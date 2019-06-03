@@ -1,4 +1,5 @@
 ﻿using ListerMobile.Models;
+using ListerMobile.ViewModels;
 using System;
 using System.Diagnostics;
 using Xamarin.Forms;
@@ -10,33 +11,56 @@ namespace ListerMobile.Views
     public partial class SendPage : ContentPage
     {
         public string UserNameEntryText { get; set; }
+        public ShoppingList ShoppingList { get; set; } = new ShoppingList();
 
-        public SendPage()
+        SendToUserViewModel viewModel;
+
+
+        public SendPage(ShoppingList list)
         {
+
+
             InitializeComponent();
+            ShoppingList = list;
+            BindingContext = viewModel = new SendToUserViewModel(ShoppingList);
+
+            MessagingCenter.Subscribe<SendToUserViewModel>(this, "AlreadySentAlert", (sender) =>
+            {
+                DisplayAlert("Lista została już wysłana", "", "OK");
+            });
+
+
+            //MessagingCenter.Subscribe<SendToUserViewModel>(this, "ListHasBeenSent", (sender) =>
+            //{
+            //    SuccesLabel
+            //});
+
         }
 
         private void SendShoppingListToUser_Clicked(object sender, EventArgs e)
         {
-            ImageButton btn = sender as ImageButton;
-            var item = btn.BindingContext as ShoppingList;
-            if (item == null) return;
 
-            MessagingCenter.Send(this, "SendToUser");
+            try
+            {
+                ImageButton btn = sender as ImageButton;
+                var item = btn.BindingContext as User;
+                if (item == null) return;
+                var userName = item.Name;
+
+                MessagingCenter.Send(this, "SendToChosenUser", userName);
+            }
+            catch (Exception ex)
+            {
+
+                Debug.Write(ex.InnerException);
+            }
+
         }
 
         private void SearchUser_Clicked(object sender, EventArgs e)
         {
-
-
             try
             {
-                //Button btn = sender as Button;
-                //var item = btn.BindingContext as string;
-                //if (item == null) return;
-
-
-
                 UserNameEntryText = SearchEntry.Text;
 
                 MessagingCenter.Send(this, "SearchUserClicked", UserNameEntryText);
@@ -46,7 +70,6 @@ namespace ListerMobile.Views
 
                 Debug.WriteLine(ex.Message);
             }
-
         }
     }
 }

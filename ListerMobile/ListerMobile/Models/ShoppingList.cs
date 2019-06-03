@@ -11,13 +11,14 @@ namespace ListerMobile.Models
         public string BodyHighlight { get; set; }
         public string Body { get; set; }
         public string User { get; set; }
+        public string Users { get; set; }
         public virtual ICollection<Product> Products { get; set; }
 
         public ShoppingList()
         {
 
         }
-        public ShoppingList(int id, string name, DateTime creationDate, string bodyHighlight, string body, string user)
+        public ShoppingList(int id, string name, DateTime creationDate, string bodyHighlight, string body, string user, string users)
         {
             Id = id;
             Name = name;
@@ -25,6 +26,7 @@ namespace ListerMobile.Models
             BodyHighlight = bodyHighlight;
             Body = body;
             User = user;
+            Users = users;
         }
 
         //public ShoppingListStatus Status { get; set; } = ShoppingListStatus.Draft;

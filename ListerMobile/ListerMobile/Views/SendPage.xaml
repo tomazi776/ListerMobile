@@ -5,9 +5,9 @@
              x:Class="ListerMobile.Views.SendPage"
              Title="{Binding Title}" NavigationPage.HasNavigationBar="True" NavigationPage.HasBackButton="True">
 
-    <ContentPage.BindingContext>
+    <!--<ContentPage.BindingContext>
         <viewModels:SendToUserViewModel/>
-    </ContentPage.BindingContext>
+    </ContentPage.BindingContext>-->
     
     <ContentPage.Content>
         <Grid>
@@ -25,6 +25,7 @@
                            PlaceholderColor="DarkGray"
                            VerticalOptions="CenterAndExpand" 
                            HorizontalOptions="CenterAndExpand" />
+                    
                     <Button x:Name="SearchButton" Text="Szukaj" Clicked="SearchUser_Clicked"/>
                 </StackLayout>
                 <Label Text="Użytkownicy:"
@@ -84,7 +85,7 @@
                                         HeightRequest="40"
                                         WidthRequest="40"
                                         BackgroundColor="Transparent" 
-                                        BorderColor="Transparent" Command="{Binding SendToSelectedUserCommand}" >
+                                        BorderColor="Transparent" Clicked="SendShoppingListToUser_Clicked" >
                                             <VisualStateManager.VisualStateGroups>
                                                 <VisualStateGroup x:Name="CommonStates">
                                                     <VisualState x:Name="Normal">

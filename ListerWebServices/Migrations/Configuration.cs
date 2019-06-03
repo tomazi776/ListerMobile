@@ -23,6 +23,7 @@ namespace ListerWebServices.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            //Database.SetInitializer(new DropCreateDatabaseAlways<ShoppingListsContext>());
         }
     }
 }

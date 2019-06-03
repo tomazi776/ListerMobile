@@ -6,6 +6,7 @@ namespace ListerMobile.Helpers
     public sealed class MyStorage
     {
         public string UserName { get; set; }
+        public User LoggedUser { get; set; } = new User();
         public ObservableCollection<User> FriendlyUsers { get; set; } = new ObservableCollection<User>();
 
         private MyStorage()

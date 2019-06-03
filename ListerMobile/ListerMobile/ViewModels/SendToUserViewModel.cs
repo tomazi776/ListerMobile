@@ -2,8 +2,10 @@
 using ListerMobile.Models;
 using ListerMobile.Services;
 using ListerMobile.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -26,59 +28,110 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref knownusers, value); }
         }
 
-        public User User { get; set; } = new User();
-
+        public string LoggedUserName { get; set; }
+        public string ChosenUserName { get; set; }
         public ShoppingList ShoppingList { get; set; } = new ShoppingList();
+        public ShoppingList SendingShippingList { get; set; } = new ShoppingList();
 
-        //ICommand SendToSelectedUserCommand { get; set; }
 
-        public SendToUserViewModel()
+        public SendToUserViewModel(ShoppingList list)
         {
             Title = "Wyślij do";
-            //SendToSelectedUserCommand = new Command(SendShoppingList);
+            ShoppingList = list;
+            GetCurrentUser();
+            AssignAdequateValueTosers();
             InitializeDataAsync();
 
-            MessagingCenter.Subscribe<ShoppingListsPage, ShoppingList>(this, "SendListButtonClicked", async (obj, item) =>
-            {
-
-                var shoppingList = item as ShoppingList;
-                //var shoppingListsServices = new ShoppingListsService();
-                ShoppingList = shoppingList;
-            });
+            MessagingCenter.Subscribe<SendPage, string>(this, "SendToChosenUser", async (sender, arg) =>
+           {
+               try
+               {
+                   ChosenUserName = arg;
+                   var sent = CheckIfAlreadySent();
+                   if (!sent)
+                   {
+                       AssignUsersToShoppingList();
+                       await SendShoppingList(ShoppingList);
+                   }
+               }
+               catch (Exception ex)
+               {
+                   Debug.Write(ex.InnerException.Message);
+               }
+           });
 
             MessagingCenter.Subscribe<SendPage, string>(this, "SearchUserClicked", (sender, arg) =>
             {
-                GetSearchedUser(arg);
+                var searchedUser = AllUsers.Find(n => n.Name.Equals(arg));
+
+                AddSearchedUser(arg, searchedUser);
             });
         }
 
-        private void GetSearchedUser(string userName)
+        private bool CheckIfAlreadySent()
         {
-            var searchedUser = AllUsers.Find(n => n.Name.Equals(userName));
+            var listHasName = CheckIfHasName(ChosenUserName);
 
-            if (MyStorage.GetMyStorageInstance.FriendlyUsers.Contains(searchedUser))
+            if (listHasName)
+            {
+                MessagingCenter.Send(this, "AlreadySentAlert");
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool CheckIfHasName(string userName)
+        {
+            return ShoppingList.Users.Contains(userName) ? true : false;
+        }
+
+        private void AssignAdequateValueTosers()
+        {
+            if (ShoppingList.Users != null)
             {
                 return;
             }
-            MyStorage.GetMyStorageInstance.FriendlyUsers.Add(searchedUser);
 
-            KnownUsers = MyStorage.GetMyStorageInstance.FriendlyUsers;
-
-            //foreach (var user in MyStorage.GetMyStorageInstance.FriendlyUsers)
-            //{
-            //    KnownUsers.Add(searchedUser);
-            //}
-
-
-
-            //KnownUsers.Add(searchedUser);
+            ShoppingList.Users = "";
         }
 
-        //private void SendShoppingList(object list)
-        //{
-        //    //var shoppingListService = new ShoppingListsService();
-        //    var dupal = "sss";
-        //}
+        private void AssignUsersToShoppingList()
+        {
+            var listHasName = CheckIfHasName(LoggedUserName);
+            if (!listHasName)
+            {
+                ShoppingList.Users = LoggedUserName;
+                ShoppingList.Users += " " + ChosenUserName;
+            }
+
+            else
+            {
+                ShoppingList.Users += " " + ChosenUserName;
+            }
+        }
+
+        private void AddSearchedUser(string userName, User user)
+        {
+            if (KnownUsers.Contains(user) || MyStorage.GetMyStorageInstance.FriendlyUsers.Contains(user))
+            {
+                return;
+            }
+
+            MyStorage.GetMyStorageInstance.FriendlyUsers.Add(user);
+            KnownUsers = MyStorage.GetMyStorageInstance.FriendlyUsers;
+        }
+
+        private async Task SendShoppingList(ShoppingList list)
+        {
+            var shoppingListsService = new ShoppingListsService();
+            await shoppingListsService.PutShoppingListAsync(list.Id, list);
+
+            //MessagingCenter.Send(this, "ListHasBeenSent");
+        }
 
         private async void InitializeDataAsync()
         {
@@ -90,21 +143,17 @@ namespace ListerMobile.ViewModels
 
         private async void FilterUsersFromCurrent(ObservableCollection<User> users)
         {
-            var loggedUser = await SecureStorage.GetAsync("loginToken");
+            var loggedUserName = await SecureStorage.GetAsync("loginToken");
             IEnumerable<User> enumerableUsers = users;
             var listofUsers = new List<User>(enumerableUsers);
-            var thisUser = listofUsers.Find(n => n.Name.Equals(loggedUser));
+            var thisUser = listofUsers.Find(n => n.Name.Equals(loggedUserName));
             listofUsers.Remove(thisUser);
-
-            //var observableUsers = new ObservableCollection<User>(listofUsers);
             AllUsers = listofUsers;
         }
 
-
-
-        private async Task<string> GetCurrentUser()
+        private async void GetCurrentUser()
         {
-            return await SecureStorage.GetAsync("loginToken");
+            LoggedUserName = await SecureStorage.GetAsync("loginToken");
         }
     }
 }
