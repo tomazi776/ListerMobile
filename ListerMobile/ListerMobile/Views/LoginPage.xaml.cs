@@ -139,7 +139,6 @@ namespace ListerMobile.Views
 
             var loggedUser = Users.First(u => u.Name.Equals(userName));
             MyStorage.GetMyStorageInstance.LoggedUser = loggedUser;
-            var dupal = "ssssssssssss";
         }
 
         private async void GetUsersAsync()

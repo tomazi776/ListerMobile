@@ -30,10 +30,10 @@ namespace ListerMobile.Views
             });
 
 
-            MessagingCenter.Subscribe<SendToUserViewModel>(this, "ListHasBeenSent", (sender) =>
-            {
-
-            });
+            //MessagingCenter.Subscribe<SendToUserViewModel>(this, "ListHasBeenSent", (sender) =>
+            //{
+            //    SuccesLabel
+            //});
 
         }
 
@@ -59,16 +59,8 @@ namespace ListerMobile.Views
 
         private void SearchUser_Clicked(object sender, EventArgs e)
         {
-
-
             try
             {
-                //Button btn = sender as Button;
-                //var item = btn.BindingContext as string;
-                //if (item == null) return;
-
-
-
                 UserNameEntryText = SearchEntry.Text;
 
                 MessagingCenter.Send(this, "SearchUserClicked", UserNameEntryText);
@@ -78,7 +70,6 @@ namespace ListerMobile.Views
 
                 Debug.WriteLine(ex.Message);
             }
-
         }
     }
 }

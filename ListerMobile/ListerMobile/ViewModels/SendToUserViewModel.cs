@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -27,8 +28,8 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref knownusers, value); }
         }
 
-        public string LoggedUser { get; set; }
-        public string ChosenUser { get; set; }
+        public string LoggedUserName { get; set; }
+        public string ChosenUserName { get; set; }
         public ShoppingList ShoppingList { get; set; } = new ShoppingList();
         public ShoppingList SendingShippingList { get; set; } = new ShoppingList();
 
@@ -45,18 +46,13 @@ namespace ListerMobile.ViewModels
            {
                try
                {
-                   ChosenUser = arg;
-
-                   if (ShoppingList.Users.Contains(ChosenUser))
+                   ChosenUserName = arg;
+                   var sent = CheckIfAlreadySent();
+                   if (!sent)
                    {
-                       MessagingCenter.Send(this, "AlreadySentAlert");
-
-                       return;
+                       AssignUsersToShoppingList();
+                       await SendShoppingList(ShoppingList);
                    }
-
-                   EvaluateUsers();
-
-                   SendShoppingList(ShoppingList);
                }
                catch (Exception ex)
                {
@@ -66,8 +62,31 @@ namespace ListerMobile.ViewModels
 
             MessagingCenter.Subscribe<SendPage, string>(this, "SearchUserClicked", (sender, arg) =>
             {
-                GetSearchedUser(arg);
+                var searchedUser = AllUsers.Find(n => n.Name.Equals(arg));
+
+                AddSearchedUser(arg, searchedUser);
             });
+        }
+
+        private bool CheckIfAlreadySent()
+        {
+            var listHasName = CheckIfHasName(ChosenUserName);
+
+            if (listHasName)
+            {
+                MessagingCenter.Send(this, "AlreadySentAlert");
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool CheckIfHasName(string userName)
+        {
+            return ShoppingList.Users.Contains(userName) ? true : false;
         }
 
         private void AssignAdequateValueTosers()
@@ -80,33 +99,33 @@ namespace ListerMobile.ViewModels
             ShoppingList.Users = "";
         }
 
-        private void EvaluateUsers()
+        private void AssignUsersToShoppingList()
         {
-            if (!ShoppingList.Users.Contains(LoggedUser))
+            var listHasName = CheckIfHasName(LoggedUserName);
+            if (!listHasName)
             {
-                ShoppingList.Users = LoggedUser;
+                ShoppingList.Users = LoggedUserName;
+                ShoppingList.Users += " " + ChosenUserName;
             }
 
             else
             {
-                ShoppingList.Users += " " + ChosenUser;
+                ShoppingList.Users += " " + ChosenUserName;
             }
         }
 
-        private void GetSearchedUser(string userName)
+        private void AddSearchedUser(string userName, User user)
         {
-            var searchedUser = AllUsers.Find(n => n.Name.Equals(userName));
-
-            if (MyStorage.GetMyStorageInstance.FriendlyUsers.Contains(searchedUser))
+            if (KnownUsers.Contains(user) || MyStorage.GetMyStorageInstance.FriendlyUsers.Contains(user))
             {
                 return;
             }
-            MyStorage.GetMyStorageInstance.FriendlyUsers.Add(searchedUser);
 
+            MyStorage.GetMyStorageInstance.FriendlyUsers.Add(user);
             KnownUsers = MyStorage.GetMyStorageInstance.FriendlyUsers;
         }
 
-        private async void SendShoppingList(ShoppingList list)
+        private async Task SendShoppingList(ShoppingList list)
         {
             var shoppingListsService = new ShoppingListsService();
             await shoppingListsService.PutShoppingListAsync(list.Id, list);
@@ -129,16 +148,12 @@ namespace ListerMobile.ViewModels
             var listofUsers = new List<User>(enumerableUsers);
             var thisUser = listofUsers.Find(n => n.Name.Equals(loggedUserName));
             listofUsers.Remove(thisUser);
-
-            //var observableUsers = new ObservableCollection<User>(listofUsers);
             AllUsers = listofUsers;
         }
 
-
-
         private async void GetCurrentUser()
         {
-            LoggedUser = await SecureStorage.GetAsync("loginToken");
+            LoggedUserName = await SecureStorage.GetAsync("loginToken");
         }
     }
 }
