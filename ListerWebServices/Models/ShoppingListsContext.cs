@@ -14,6 +14,7 @@ namespace ListerWebServices.Models
 
         public ShoppingListsContext() : base("name=ShoppingListsContext")
         {
+            Database.SetInitializer<ShoppingListsContext>(new CreateDatabaseIfNotExists<ShoppingListsContext>());
         }
 
 

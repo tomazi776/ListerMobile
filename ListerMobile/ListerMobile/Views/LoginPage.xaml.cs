@@ -113,8 +113,12 @@ namespace ListerMobile.Views
                 {
                     await SecureStorage.SetAsync("loginToken", UserNameEntry.Text);
                     await SecureStorage.SetAsync("token", PasswordEntry.Text);
+
                     UserName = UserNameEntry.Text;
                     MyStorage.GetMyStorageInstance.UserName = UserName;
+
+                    SetLoggedUser(UserName);
+
                     await Navigation.PopModalAsync();
 
                 }
@@ -128,6 +132,13 @@ namespace ListerMobile.Views
             {
                 await DisplayAlert("Login lub hasło nieprawidłowe!", "", "Spróbuj jeszcze raz");
             }
+        }
+
+        private void SetLoggedUser(string userName)
+        {
+
+            var loggedUser = Users.First(u => u.Name.Equals(userName));
+            MyStorage.GetMyStorageInstance.LoggedUser = loggedUser;
         }
 
         private async void GetUsersAsync()

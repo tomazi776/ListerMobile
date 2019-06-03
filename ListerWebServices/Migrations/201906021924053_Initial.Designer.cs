@@ -7,13 +7,13 @@ namespace ListerWebServices.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Modify_ShoppingListModel : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Modify_ShoppingListModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201906011924084_Modify_ShoppingListModel"; }
+            get { return "201906021924053_Initial"; }
         }
         
         string IMigrationMetadata.Source
