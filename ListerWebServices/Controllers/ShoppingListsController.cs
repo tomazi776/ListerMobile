@@ -1,7 +1,9 @@
 ﻿using ListerMobile.Models;
 using ListerWebServices.Models;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
@@ -16,15 +18,33 @@ namespace ListerWebServices.Controllers
         // GET: api/ShoppingLists
         public IQueryable<ShoppingList> GetShoppingLists()
         {
-            return db.ShoppingLists;
+            var result = db.ShoppingLists;
+            return result;
         }
 
-        // GET: api/Users/userName/ShoppingLists
 
-        [Route("api/Users/{userName}/ShoppingLists")]
-        public IQueryable<ShoppingList> GetUserShoppingLists(string userName)
+        /// <summary>
+        /// RECEIVED SHOPPING LISTS
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        /// 
+        // GET: api/ShoppingLists
+        //[HttpGet]
+        //[Route("api/ShoppingLists")]
+        public IQueryable<ShoppingList> GetUserShoppingLists(string username)
         {
-            return db.ShoppingLists.Where(n => n.User.ToLower().Equals(userName));
+            try
+            {
+                var matchingUsers = db.ShoppingLists.AsEnumerable().Where(item => item.Users.Split(' ').Any(a => a == username));
+                var result = matchingUsers.AsQueryable();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex.InnerException.Message);
+                throw;
+            }
         }
 
         // GET: api/ShoppingLists/5

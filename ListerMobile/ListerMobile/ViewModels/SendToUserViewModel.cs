@@ -104,7 +104,6 @@ namespace ListerMobile.ViewModels
             var listHasName = CheckIfHasName(LoggedUserName);
             if (!listHasName)
             {
-                ShoppingList.Users = LoggedUserName;
                 ShoppingList.Users += " " + ChosenUserName;
             }
 

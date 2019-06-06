@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ListerMobile.Views.LoginPage" BackgroundColor="#88a2aa">
+             x:Class="ListerMobile.Views.LoginPage" BackgroundColor="#0f0f0f">
     <ContentPage.Content>
         <Grid x:Name="MainGrid" VerticalOptions="Center" HorizontalOptions="Center">
             <Grid x:Name="GridLogin" Margin="20, 40, 20, 40"
-                  BackgroundColor="#00aecc" WidthRequest="320" HeightRequest="500"  HorizontalOptions="Center" VerticalOptions="Center" >
+                  BackgroundColor="#1f2324" WidthRequest="320" HeightRequest="500"  HorizontalOptions="Center" VerticalOptions="Center" >
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -31,8 +31,10 @@
                 <Entry x:Name="UserNameEntry" 
                    Grid.Row="2"
                    Placeholder="Login"
+                   TextColor="White"
                    PlaceholderColor="White"/>
             <Entry x:Name="PasswordEntry" 
+                   TextColor="White"
                    Grid.Row="3"
                    Placeholder="Hasło" 
                    PlaceholderColor="White" IsPassword="False"/>

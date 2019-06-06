@@ -27,15 +27,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="80"/>
             </Grid.RowDefinitions>
-            <!--<StackLayout VerticalOptions="Start" 
-                         HorizontalOptions="FillAndExpand" 
-                         Orientation="Horizontal"          
-                         Padding="10,5,10,5">
-                <ImageButton HorizontalOptions="StartAndExpand" Source="hamburger_biel.png" Clicked="HamburgerButton_Clicked"/>
-                <Label HorizontalOptions="CenterAndExpand" Text="Wszystkoczegodzischcesz"/>
-                <ImageButton HorizontalOptions="EndAndExpand" Source="settings_biel.png" Clicked="SettingsButton_Clicked"/>
-            </StackLayout>-->
-            
             <StackLayout Grid.Row="0" Spacing="1">
                 <Grid Grid.Row="1" BackgroundColor="White">
                     <Grid.RowDefinitions>
@@ -116,8 +107,6 @@
                                             </Label.FontFamily>
                                         </Label>
                                     </StackLayout>
-                                        
-                                    <!--</Grid>-->
                                     
                                     <Label Margin="0,-15,0,5" 
                                            VerticalTextAlignment="Start" 

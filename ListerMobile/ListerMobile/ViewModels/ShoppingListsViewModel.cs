@@ -13,9 +13,6 @@ namespace ListerMobile.ViewModels
     public class ShoppingListsViewModel : BaseViewModel, INotifyPropertyChanged
     {
         private const string SHOPPING_LISTS_PAGE_TITLE = "Moje Listy";
-        public ObservableCollection<ShoppingList> ReceivedShoppingLists { get; set; } = new ObservableCollection<ShoppingList>();
-
-
         private bool IsListRemoved { get; set; } = false;
 
         private ObservableCollection<ShoppingList> _myShoppingLists;
@@ -25,19 +22,36 @@ namespace ListerMobile.ViewModels
             set { SetProperty(ref _myShoppingLists, value); }
         }
 
-        //public ICommand SendToUserCommand { get; set; }
+        private ObservableCollection<ShoppingList> _receivedShoppingLists;
+        public ObservableCollection<ShoppingList> ReceivedShoppingLists
+        {
+            get { return _receivedShoppingLists; }
+            set { SetProperty(ref _receivedShoppingLists, value); }
+        }
+
+        public string LoggedUser { get; set; }
 
         /// <summary>
         /// Initializes Data fetched from server
         /// </summary>
-        public ShoppingListsViewModel(INavigation navigation)
+        public ShoppingListsViewModel(INavigation navigation, bool isOtherView = false)
         {
             Title = SHOPPING_LISTS_PAGE_TITLE;
             MyShoppingLists = new ObservableCollection<ShoppingList>();
+            GetLoggedUser();
+            if (isOtherView)
+            {
+                Title = "Odebrane Listy";
+                ReceivedShoppingLists = new ObservableCollection<ShoppingList>();
+                GetReceivedLists();
+            }
+
             Navigation = navigation;
 
-            //SendToUserCommand = new Command(SendList);
-            InitializeDataAsync();
+            if (!isOtherView)
+            {
+                InitializeDataAsync();
+            }
 
 
             MessagingCenter.Subscribe<NewShoppingListViewModel, ShoppingList>(this, "AddShoppingList", async (obj, item) =>
@@ -46,7 +60,6 @@ namespace ListerMobile.ViewModels
                 {
                     var newShoppingList = item as ShoppingList;
                     var shoppingListsServices = new ShoppingListsService();
-
                     await shoppingListsServices.PostShoppingListAsync(newShoppingList);
                     MyShoppingLists.Add(newShoppingList);
                 }
@@ -77,19 +90,22 @@ namespace ListerMobile.ViewModels
             });
         }
 
-        //public async void SendList()
-        //{
-        //    await Navigation.PushAsync(new NavigationPage(new SendPage()));
-        //}
+        private async void GetLoggedUser()
+        {
+            LoggedUser = await SecureStorage.GetAsync("loginToken");
+        }
+
+        private async void GetReceivedLists()
+        {
+            var shoppingListService = new ShoppingListsService();
+            var receivedShoppingLists = await shoppingListService.GetUserShoppingListsAsync(LoggedUser);
+            ReceivedShoppingLists = receivedShoppingLists;
+        }
 
         private async Task InitializeDataAsync()
         {
             var shoppingListsServices = new ShoppingListsService();
             var shoppingLists = await shoppingListsServices.GetShoppingListsAsync();
-
-            var userName = await SecureStorage.GetAsync("loginToken");
-            //var shoppingLists = await shoppingListsServices.GetUserShoppingListsAsync(userName);     //TODO  Modify service to get all the ShoppingLists for currently logged User
-
             MyShoppingLists = shoppingLists;
         }
     }

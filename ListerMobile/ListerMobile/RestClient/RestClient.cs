@@ -10,11 +10,11 @@ namespace ListerMobile.RestClient
 {
     public class RestClient<T>
     {
-
+        private const string LOCALHOST = "http://localhost:56085/";
         private const string WEB_SERVICE_URI = "http://sample1app.azurewebsites.net/";
         private const int PORT = 56085;
 
-        public async Task<ObservableCollection<T>> GetAsync(string servicePath)       // Zmienić typ Taska na generyczny dla resty klasy
+        public async Task<ObservableCollection<T>> GetAsync(string servicePath, string userName = "")       // Zmienić typ Taska na generyczny dla resty klasy
         {
 
             try
@@ -23,9 +23,22 @@ namespace ListerMobile.RestClient
                 {
                     client.BaseAddress = new Uri(WEB_SERVICE_URI + PORT);
 
-                    var json = await client.GetStringAsync(servicePath);        //replace with func call
-                    var taskModels = JsonConvert.DeserializeObject<ObservableCollection<T>>(json);
-                    return taskModels;
+                    if (string.IsNullOrEmpty(userName))
+                    {
+                        var json = await client.GetStringAsync(servicePath);        //replace with func call
+                        var taskModels = JsonConvert.DeserializeObject<ObservableCollection<T>>(json);
+                        return taskModels;
+                    }
+
+                    else
+                    {
+                        var json = await client.GetStringAsync(servicePath + userName);        //replace with func call
+                        var taskModels = JsonConvert.DeserializeObject<ObservableCollection<T>>(json);
+                        return taskModels;
+                    }
+
+
+
 
                 }
             }
@@ -35,6 +48,29 @@ namespace ListerMobile.RestClient
             }
             return null;
         }
+
+
+        //public async Task<ObservableCollection<T>> GetSpecificListsAsync(string servicePath, string userName)       // Zmienić typ Taska na generyczny dla resty klasy
+        //{
+
+        //    try
+        //    {
+        //        using (var client = new HttpClient())
+        //        {
+        //            client.BaseAddress = new Uri(WEB_SERVICE_URI + PORT);
+
+        //            var json = await client.GetStringAsync(client.BaseAddress + servicePath + userName);        //replace with func call
+        //            var taskModels = JsonConvert.DeserializeObject<ObservableCollection<T>>(json);
+        //            return taskModels;
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Debug.WriteLine("TU MASZ BŁĄD TUMOKU:" + ex.Message);
+        //    }
+        //    return null;
+        //}
 
 
         public async Task<bool> PostAsync(T t, string servicePath)

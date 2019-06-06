@@ -8,22 +8,12 @@ namespace ListerMobile.Views
     public partial class ReceivedPage : ContentPage
     {
         ShoppingListsViewModel viewModel;
-
+        public bool IsReceivedPage { get; set; }
         public ReceivedPage()
         {
+            IsReceivedPage = true;
             InitializeComponent();
-            BindingContext = viewModel = new ShoppingListsViewModel(Navigation);
-            viewModel.Title = "Odebrane Listy";
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-        }
-
-        private void GetShoppingListsForCurrentUser()
-        {
-            //var shoppinglistsService = new Shoppi
+            BindingContext = viewModel = new ShoppingListsViewModel(Navigation, IsReceivedPage);
         }
     }
 }

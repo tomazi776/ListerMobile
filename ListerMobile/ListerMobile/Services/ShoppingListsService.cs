@@ -9,9 +9,6 @@ namespace ListerMobile.Services
     {
         private const string SHOPPING_LISTS_WEB_SERVICE_PATH = "/api/ShoppingLists/";
         private const string USERS_WEB_SERVICE_PATH = "/api/Users/";
-        private const string SHOPPING_LISTS = "/ShoppingLists";
-        private const string USER_SHOPPING_LISTS_WEB_SERVICE_PATH = "/api/Users/{userName}/ShoppingLists/";
-
 
         public async Task<ObservableCollection<ShoppingList>> GetShoppingListsAsync()
         {
@@ -20,16 +17,11 @@ namespace ListerMobile.Services
             return shoppingLists;
         }
 
-        public async Task<ObservableCollection<ShoppingList>> GetUserShoppingListsAsync(string userName)
+        public async Task<ObservableCollection<ShoppingList>> GetUserShoppingListsAsync(string username)
         {
             RestClient<ShoppingList> restClient = new RestClient<ShoppingList>();
-            var userShoppingLists = await restClient.GetAsync(CombinePathForUser(userName));
+            var userShoppingLists = await restClient.GetAsync(SHOPPING_LISTS_WEB_SERVICE_PATH, username);
             return userShoppingLists;
-        }
-
-        private string CombinePathForUser(string userName)
-        {
-            return USERS_WEB_SERVICE_PATH + userName + SHOPPING_LISTS;
         }
 
         public async Task DeleteShoppingListAsync(int id)
