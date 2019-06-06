@@ -4,20 +4,6 @@
              xmlns:viewModels="clr-namespace:ListerMobile.ViewModels"
              x:Class="ListerMobile.Views.ReceivedPage"
              Title="{Binding Title}">
-    <!--<ContentPage.BindingContext>
-        <viewModels:ShoppingListsViewModel/>
-    </ContentPage.BindingContext>-->
-
-    <!--<ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Clicked="AddItem_Clicked">
-            <ToolbarItem.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="UWP" Value="add.png"/>
-                </OnPlatform>
-            </ToolbarItem.Icon>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>-->
-
     <ContentPage.Content>
         <StackLayout>
             <Label
@@ -37,22 +23,73 @@
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="True"
                 RefreshCommand="{Binding LoadItemsCommand}"
-                IsPullToRefreshEnabled="true"
+                IsPullToRefreshEnabled="False"
                 IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Padding="10">
-                                <Label Text="{Binding Name}" 
-                                LineBreakMode="NoWrap" 
-                                Style="{DynamicResource ListItemTextStyle}" 
-                                FontSize="16"
-                                HorizontalOptions="Center"/>
-                                <Label  Text="{Binding BodyHighlight}" 
-                                Style="{DynamicResource ListItemDetailTextStyle}"
-                                FontSize="13"
-                                HorizontalOptions="Center" />
+                            <StackLayout Padding="10" >
+                                <Label         
+                                        Margin="0,0,0,-34" 
+                                        TextColor="Black" 
+                                        LineBreakMode="NoWrap" 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="End" 
+                                        TextDecorations="Underline"
+                                        FontSize="12" 
+                                        Text="{Binding User, StringFormat='Od: {0}'}">
+                                    <Label.FontFamily>
+                                        <OnPlatform x:TypeArguments="x:String">
+                                            <On Platform="Android" Value="GloriaHallelujah.ttf#GloriaHallelujah" />
+                                        </OnPlatform>
+                                    </Label.FontFamily>
+                                </Label>
+                                
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                    <Label 
+                                        Margin="0,0,0,0"
+                                        Text="{Binding Name}" 
+                                        FontAttributes="Bold"
+                                        LineBreakMode="NoWrap" 
+                                        Style="{DynamicResource ListItemTextStyle}" 
+                                        FontSize="18"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="End">
+                                        <Label.FontFamily>
+                                            <OnPlatform x:TypeArguments="x:String">
+                                                <On Platform="Android" Value="Quicksand-Bold.otf#Quicksand-Bold" />
+                                            </OnPlatform>
+                                        </Label.FontFamily>
+                                    </Label>
+
+                                    <Label 
+                                        Margin="0,0,0,0" 
+                                        TextColor="Black" 
+                                        LineBreakMode="WordWrap" 
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Start"
+                                        FontSize="18"
+                                        Text="{Binding CreationDate, StringFormat='  ({0:dd.MM.yy})  '}" >
+                                        <Label.FontFamily>
+                                            <OnPlatform x:TypeArguments="x:String">
+                                                <On Platform="Android" Value="PragatiNarrow-Regular.ttf#PragatiNarrow-Regular" />
+                                            </OnPlatform>
+                                        </Label.FontFamily>
+                                    </Label>
+
+                                </StackLayout>
+
+
+                                <Label  Margin="0,-15,0,5"
+                                        Text="{Binding BodyHighlight}" 
+                                        VerticalTextAlignment="Start" 
+                                        VerticalOptions="Start"                                        
+                                        FontSize="Small"
+                                        FontAttributes="Italic" 
+                                        Style="{DynamicResource ListItemDetailTextStyle}"
+                                        HorizontalOptions="Center" />
+
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>

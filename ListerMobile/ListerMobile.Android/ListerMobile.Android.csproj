@@ -86,6 +86,9 @@
     <AndroidAsset Include="Assets\Quicksand-Bold.otf" />
     <AndroidAsset Include="Assets\Quicksand-Light.otf" />
     <AndroidAsset Include="Assets\PragatiNarrow-Regular.ttf" />
+    <AndroidAsset Include="Assets\OpenSansCondensed-Light.ttf" />
+    <AndroidAsset Include="Assets\OpenSansCondensed-LightItalic.ttf" />
+    <AndroidAsset Include="Assets\GloriaHallelujah.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <AndroidAsset Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
